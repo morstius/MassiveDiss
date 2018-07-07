@@ -1,6 +1,5 @@
 // Include GLFW
 #include <GLFW/glfw3.h>
-extern GLFWwindow* window; // The "extern" keyword here is to access the variable "window" declared in tutorialXXX.cpp. This is a hack to keep the tutorials simple. Please avoid this.
 
 // Include GLM
 #include <glm/glm.hpp>
@@ -27,14 +26,14 @@ float horizontalAngle = 3.14f;
 // Initial vertical angle : none
 float verticalAngle = 0.0f;
 // Initial Field of View
-float initialFoV = 45.0f;
+float initialFoV = 65.0f;
 
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.0005f;
 
 
 
-void computeMatricesFromInputs(){
+void computeMatricesFromInputs(GLFWwindow* window){
 
 	// glfwGetTime is called only once, the first time this function is called
 	static double lastTime = glfwGetTime();
