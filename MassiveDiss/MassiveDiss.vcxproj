@@ -105,7 +105,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glm;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glfw-3.2.1.bin.WIN64\include;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\.;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -145,7 +145,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glm;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glfw-3.2.1.bin.WIN64\include;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\.;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -159,12 +159,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="lib\common\controls.hpp" />
     <ClInclude Include="lib\common\shader.hpp" />
+    <ClInclude Include="lib\common\texture.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="lib\common\controls.cpp" />
     <ClCompile Include="lib\common\shader.cpp" />
+    <ClCompile Include="lib\common\texture.cpp" />
     <ClCompile Include="MassiveDiss.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -30,6 +30,12 @@
     <ClInclude Include="lib\common\shader.hpp">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="lib\common\texture.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\common\controls.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -39,6 +45,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lib\common\shader.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\common\texture.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\common\controls.cpp">
       <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>
