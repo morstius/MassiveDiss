@@ -42,4 +42,12 @@
       <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\base.vertexshader">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\base.fragmentshader">
+      <Filter>shaders</Filter>
+    </None>
+  </ItemGroup>
 </Project>
