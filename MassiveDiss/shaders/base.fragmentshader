@@ -1,7 +1,6 @@
 #version 330 core
 
 // Input data
-//in vec2 fragmentColor;
 
 // Interpolated values from the vertex shaders
 in vec2 UV;
@@ -14,8 +13,7 @@ uniform sampler2D myTextureSampler;
 
 void main()
 {
-
 	// Output color 
-	color = texture( myTextureSampler, UV ).rgb; //fragmentColor;
+	color = texture( myTextureSampler, UV ).rgb;
 
 }

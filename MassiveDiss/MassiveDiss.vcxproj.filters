@@ -36,6 +36,9 @@
     <ClInclude Include="lib\common\controls.hpp">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="ModelLoader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -52,6 +55,9 @@
     </ClCompile>
     <ClCompile Include="lib\common\controls.cpp">
       <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelLoader.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

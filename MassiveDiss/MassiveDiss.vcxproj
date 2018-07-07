@@ -162,6 +162,7 @@
     <ClInclude Include="lib\common\controls.hpp" />
     <ClInclude Include="lib\common\shader.hpp" />
     <ClInclude Include="lib\common\texture.hpp" />
+    <ClInclude Include="ModelLoader.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -170,6 +171,7 @@
     <ClCompile Include="lib\common\shader.cpp" />
     <ClCompile Include="lib\common\texture.cpp" />
     <ClCompile Include="MassiveDiss.cpp" />
+    <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
