@@ -1,3 +1,6 @@
 
 # .vs files
 .vs
+
+# models can be too big for git
+MassiveDiss/models
