@@ -33,7 +33,7 @@ float mouseSpeed = 0.0008f;
 
 
 
-void computeMatricesFromInputs(GLFWwindow* window){
+void computeMatricesFromInputs(GLFWwindow* window, GLFWmonitor* monitor){
 
 	// glfwGetTime is called only once, the first time this function is called
 	static double lastTime = glfwGetTime();
@@ -59,6 +59,10 @@ void computeMatricesFromInputs(GLFWwindow* window){
 		sin(verticalAngle),
 		cos(verticalAngle) * cos(horizontalAngle)
 	);
+
+	// don't want to change y value when going back or forward
+	glm::vec3 horizontalDir = direction;
+	horizontalDir.y = 0.0f;
 	
 	// Right vector
 	glm::vec3 right = glm::vec3(
@@ -72,11 +76,11 @@ void computeMatricesFromInputs(GLFWwindow* window){
 
 	// Move forward
 	if (glfwGetKey( window, GLFW_KEY_UP ) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-		position += direction * deltaTime * speed;
+		position += horizontalDir * deltaTime * speed;
 	}
 	// Move backward
 	if (glfwGetKey( window, GLFW_KEY_DOWN ) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
-		position -= direction * deltaTime * speed;
+		position -= horizontalDir * deltaTime * speed;
 	}
 	// Strafe right
 	if (glfwGetKey( window, GLFW_KEY_RIGHT ) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
@@ -85,6 +89,25 @@ void computeMatricesFromInputs(GLFWwindow* window){
 	// Strafe left
 	if (glfwGetKey( window, GLFW_KEY_LEFT ) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
 		position -= right * deltaTime * speed;
+	}
+	// Go up
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+		position += vec3(0, 1.0f, 0) * deltaTime * speed;
+	}
+	// Go down
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+		position -= vec3(0, 1.0f, 0) * deltaTime * speed;
+	}
+	// Go fullscreen
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+		glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
+		glViewport(0, 0, mode->width, mode->height);
+	}
+	// Go windowed
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+		glfwSetWindowMonitor(window, NULL, 50, 50, 1024, 768, 0);
+		glViewport(0, 0, 1024, 768);
 	}
 	// Close window
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {

@@ -103,13 +103,20 @@ bool loadObj(
 
 				break;
 			}
+			case 'o':
+			{
+				char objName[256];
+				sscanf(line, "%s %s", dummy, &objName);
+				printf("%s\n", objName);
+				break;
+			}
 		}
 	}
 
 	inputFile.close();
 
 	// For each vertex of each triangle
-	for (unsigned int i = 0; i<vertexIndices.size(); i++) 
+	for (unsigned int i = 0; i<vertexIndices.size(); i++)
 	{
 		// Get the indices of its attributes
 		unsigned int vertexIndex = vertexIndices[i];

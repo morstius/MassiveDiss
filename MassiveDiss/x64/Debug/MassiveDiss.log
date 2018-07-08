@@ -1,3 +1,2 @@
-﻿  MassiveDiss.cpp
-d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\massivediss.cpp(249): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+﻿  controls.cpp
   MassiveDiss.vcxproj -> D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\x64\Debug\MassiveDiss.exe
