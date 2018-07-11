@@ -19,6 +19,9 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{4475e5c3-14de-46e4-b097-f02a6bb18789}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common\types">
+      <UniqueIdentifier>{3437006f-ca1a-435b-a6ca-0165950e0fa3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -27,23 +30,41 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="lib\common\shader.hpp">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\common\texture.hpp">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\common\controls.hpp">
-      <Filter>common</Filter>
-    </ClInclude>
     <ClInclude Include="ModelLoader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="lib\common\vboindexer.hpp">
+    <ClInclude Include="lib\stb-masters\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\objloader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\controls.hpp">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="lib\common\text2D.hpp">
+    <ClInclude Include="common\shader.hpp">
       <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\text2D.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\texture.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\vboindexer.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\types\ObjInfo.h">
+      <Filter>common\types</Filter>
+    </ClInclude>
+    <ClInclude Include="common\types\MtlObj.h">
+      <Filter>common\types</Filter>
+    </ClInclude>
+    <ClInclude Include="common\types\IdxInfo.h">
+      <Filter>common\types</Filter>
+    </ClInclude>
+    <ClInclude Include="common\types\Buffers.h">
+      <Filter>common\types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -53,22 +74,25 @@
     <ClCompile Include="MassiveDiss.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lib\common\shader.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\common\texture.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\common\controls.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
     <ClCompile Include="ModelLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lib\common\vboindexer.cpp">
+    <ClCompile Include="common\objloader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="common\controls.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="lib\common\text2D.cpp">
+    <ClCompile Include="common\shader.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\text2D.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\texture.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\vboindexer.cpp">
       <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>

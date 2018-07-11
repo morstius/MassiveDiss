@@ -7,20 +7,24 @@
 #include <glm/glm.hpp>
 
 #include "ModelLoader.hpp"
+#include "common/types/MtlObj.h"
+#include "common/types/ObjInfo.h"
+#include "common/types/IdxInfo.h"
 
 bool loadObj(
 	const char * path,
-	std::vector<glm::vec3>& out_vertices,
-	std::vector<glm::vec2>& out_uvs,
-	std::vector<glm::vec3>& out_normals
+	std::vector<ObjInfo>& out_objInfo,
+	std::vector<MtlObj>& textureLib
 )
 {
 	printf("Loading .obj file %s...\n",	path);
 
+	std::vector<IdxInfo> idxInfo;
 	std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
 	std::vector<glm::vec3> temp_vertices;
 	std::vector<glm::vec2> temp_uvs;
 	std::vector<glm::vec3> temp_normals;
+	std::vector<int> temp_texInd;
 
 	// open file
 	std::ifstream inputFile(path, std::ios::in);
@@ -32,6 +36,7 @@ bool loadObj(
 	}
 
 	char line[256];
+	char curText[50];
 
 	while (inputFile.getline(line, 256))
 	{
@@ -108,31 +113,155 @@ bool loadObj(
 				char objName[256];
 				sscanf(line, "%s %s", dummy, &objName);
 				printf("%s\n", objName);
+
+				if (vertexIndices.size() != 0)
+				{
+					IdxInfo ii = IdxInfo();
+					ii.normalIndices = normalIndices;
+					ii.uvIndices = uvIndices;
+					ii.vertexIndices = vertexIndices;
+					ii.textureIndex = findTexIdx(curText, textureLib);
+					
+					idxInfo.push_back(ii);
+
+					vertexIndices.clear();
+					normalIndices.clear();
+					uvIndices.clear();
+				}
+
 				break;
+			}
+			case 'm':
+			{
+				char objName[256];
+				sscanf(line, "%s %s", &dummy, &objName);
+				if (strcmp(dummy, "mtllib") == 0)
+				{
+					printf("Loading material lib...\n");
+					populateMtlLib(objName, textureLib);
+				}
+			}
+			case 'u':
+			{
+				char objName[256];
+				sscanf(line, "%s %s", &dummy, &objName);
+
+				if (strcmp(dummy, "usemtl") == 0)
+				{
+					strcpy(curText, objName);
+				}
 			}
 		}
 	}
 
+	IdxInfo ii = IdxInfo();
+	ii.normalIndices = normalIndices;
+	ii.uvIndices = uvIndices;
+	ii.vertexIndices = vertexIndices;
+	ii.textureIndex = findTexIdx(curText, textureLib);
+
+	idxInfo.push_back(ii);
+
 	inputFile.close();
 
 	// For each vertex of each triangle
-	for (unsigned int i = 0; i<vertexIndices.size(); i++)
+	for (unsigned int j = 0; j < idxInfo.size(); j++)
 	{
-		// Get the indices of its attributes
-		unsigned int vertexIndex = vertexIndices[i];
-		unsigned int uvIndex = uvIndices[i];
-		unsigned int normalIndex = normalIndices[i];
+		ObjInfo oi = ObjInfo();
+		for (unsigned int i = 0; i < idxInfo[j].vertexIndices.size(); i++)
+		{
+			// Get the indices of its attributes
+			unsigned int vertexIndex = idxInfo[j].vertexIndices[i];
+			unsigned int uvIndex = idxInfo[j].uvIndices[i];
+			unsigned int normalIndex = idxInfo[j].normalIndices[i];
 
-		// Get the attributes thanks to the index
-		glm::vec3 vertex = temp_vertices[vertexIndex - 1];
-		glm::vec2 uv = temp_uvs[uvIndex - 1];
-		glm::vec3 normal = temp_normals[normalIndex - 1];
+			// Get the attributes thanks to the index
+			glm::vec3 vertex = temp_vertices[vertexIndex - 1];
+			glm::vec2 uv = temp_uvs[uvIndex - 1];
+			glm::vec3 normal = temp_normals[normalIndex - 1];
 
-		// Put the attributes in buffers
-		out_vertices.push_back(vertex);
-		out_uvs.push_back(uv);
-		out_normals.push_back(normal);
+			// Put the attributes in buffers
+			oi.vertices.push_back(vertex);
+			oi.uvs.push_back(uv);
+			oi.normals.push_back(normal);
+			oi.txIdx = idxInfo[j].textureIndex;
+		}
+		out_objInfo.push_back(oi);
 	}
 
 	return 0;
+}
+
+bool populateMtlLib(
+	const char * filepath,
+	std::vector<MtlObj>& textureLib
+)
+{
+	const char * base = "models/";
+	char* path;
+	path = (char*)malloc(strlen(base) + strlen(filepath) + 1);
+	strcpy(path, base);
+	strcat(path, filepath);
+
+
+	// open file
+	std::ifstream inputFile(path, std::ios::in);
+
+	if (!inputFile.is_open()) {
+		printf("Impossible to open the file %s! Are you in the right path ?\n", path);
+		getchar();
+		return false;
+	}
+
+	MtlObj mtlObj = MtlObj();
+
+	char line[256];
+
+	while (inputFile.getline(line, 256))
+	{
+		// a dummy for the first letters
+		char dummy[10];
+
+		char objName[50];
+		sscanf(line, "%s %s", &dummy, &objName);
+
+		if (strcmp(dummy, "newmtl") == 0)
+		{
+			if (mtlObj.newmtl != NULL)
+				textureLib.push_back(mtlObj);
+
+			mtlObj = MtlObj(objName);
+		}
+
+		if (strcmp(dummy, "map_Kd") == 0)
+		{
+			const char * bass = "textures/";
+			char* textPath;
+			textPath = (char*)malloc(strlen(bass) + strlen(objName) + 1);
+			strcpy(textPath, bass);
+			strcat(textPath, objName);
+
+			mtlObj.map_Kd = textPath;
+		}
+	}
+
+	textureLib.push_back(mtlObj);
+
+	return 0;
+}
+
+int findTexIdx(
+	const char * curTxt,
+	std::vector<MtlObj> txtLib
+)
+{
+	int idx = 0;
+	for (std::vector<MtlObj>::iterator it = txtLib.begin(); it != txtLib.end(); ++it, ++idx) {
+		if (strcmp(curTxt, (*it).newmtl))
+			return idx;
+	}
+
+	printf("Texture not found!!!\n");
+
+	return idx;
 }
