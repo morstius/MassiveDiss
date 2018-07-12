@@ -3,6 +3,7 @@
 #include <string>
 #include <cstring>
 #include <fstream>
+#include <string>
 
 #include <glm/glm.hpp>
 
@@ -37,6 +38,7 @@ bool loadObj(
 
 	char line[256];
 	char curText[50];
+	bool loadMtl = false;
 
 	while (inputFile.getline(line, 256))
 	{
@@ -84,27 +86,68 @@ bool loadObj(
 			}
 			case 'f':
 			{
-				unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
-				int matches = sscanf(line, "%s %d/%d/%d %d/%d/%d %d/%d/%d\n", dummy, &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
-				// checking that the format was correct
-				if (matches != 10) {
-					printf("File can't be read by our simple parser! Try exporting with other options\n");
-					inputFile.close();
-					return false;
-				}
+				unsigned int vertexIndex[4], uvIndex[4], normalIndex[4];
+				int matches = sscanf(line, "%s %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n", dummy, 
+					&vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2], &vertexIndex[3], &uvIndex[3], &normalIndex[3]);
 
-				// set vertex indices
-				vertexIndices.push_back(vertexIndex[0]);
-				vertexIndices.push_back(vertexIndex[1]);
-				vertexIndices.push_back(vertexIndex[2]);
-				// set uv indices
-				uvIndices.push_back(uvIndex[0]);
-				uvIndices.push_back(uvIndex[1]);
-				uvIndices.push_back(uvIndex[2]);
-				// set normal indices
-				normalIndices.push_back(normalIndex[0]);
-				normalIndices.push_back(normalIndex[1]);
-				normalIndices.push_back(normalIndex[2]);
+
+				switch (matches)
+				{
+					case 10:
+					{
+						// set vertex indices
+						vertexIndices.push_back(vertexIndex[0]);
+						vertexIndices.push_back(vertexIndex[1]);
+						vertexIndices.push_back(vertexIndex[2]);
+						// set uv indices
+						uvIndices.push_back(uvIndex[0]);
+						uvIndices.push_back(uvIndex[1]);
+						uvIndices.push_back(uvIndex[2]);
+						// set normal indices
+						normalIndices.push_back(normalIndex[0]);
+						normalIndices.push_back(normalIndex[1]);
+						normalIndices.push_back(normalIndex[2]);
+						
+						break;
+					}
+					case 13:
+					{
+						// set vertex indices
+						vertexIndices.push_back(vertexIndex[0]);
+						vertexIndices.push_back(vertexIndex[1]);
+						vertexIndices.push_back(vertexIndex[2]);
+						// set uv indices
+						uvIndices.push_back(uvIndex[0]);
+						uvIndices.push_back(uvIndex[1]);
+						uvIndices.push_back(uvIndex[2]);
+						// set normal indices
+						normalIndices.push_back(normalIndex[0]);
+						normalIndices.push_back(normalIndex[1]);
+						normalIndices.push_back(normalIndex[2]);
+
+						// set vertex indices
+						vertexIndices.push_back(vertexIndex[2]);
+						vertexIndices.push_back(vertexIndex[3]);
+						vertexIndices.push_back(vertexIndex[0]);
+						// set uv indices
+						uvIndices.push_back(uvIndex[2]);
+						uvIndices.push_back(uvIndex[3]);
+						uvIndices.push_back(uvIndex[0]);
+						// set normal indices
+						normalIndices.push_back(normalIndex[2]);
+						normalIndices.push_back(normalIndex[3]);
+						normalIndices.push_back(normalIndex[0]);
+
+						break;
+					}
+					default:
+					{
+						printf("File can't be read by our simple parser! Try exporting with other options\n");
+						inputFile.close();
+						return false;
+					}
+				}
+				
 
 				break;
 			}
@@ -112,7 +155,6 @@ bool loadObj(
 			{
 				char objName[256];
 				sscanf(line, "%s %s", dummy, &objName);
-				printf("%s\n", objName);
 
 				if (vertexIndices.size() != 0)
 				{
@@ -133,13 +175,18 @@ bool loadObj(
 			}
 			case 'm':
 			{
-				char objName[256];
+				char objName[50];
 				sscanf(line, "%s %s", &dummy, &objName);
 				if (strcmp(dummy, "mtllib") == 0)
 				{
-					printf("Loading material lib...\n");
-					populateMtlLib(objName, textureLib);
+					if (!loadMtl)
+					{
+						printf("Loading material lib...\n");
+						populateMtlLib(std::string(objName), textureLib);
+						loadMtl = true;
+					}
 				}
+				break;
 			}
 			case 'u':
 			{
@@ -150,6 +197,7 @@ bool loadObj(
 				{
 					strcpy(curText, objName);
 				}
+				break;
 			}
 		}
 	}
@@ -193,15 +241,11 @@ bool loadObj(
 }
 
 bool populateMtlLib(
-	const char * filepath,
+	std::string filepath,
 	std::vector<MtlObj>& textureLib
 )
 {
-	const char * base = "models/";
-	char* path;
-	path = (char*)malloc(strlen(base) + strlen(filepath) + 1);
-	strcpy(path, base);
-	strcat(path, filepath);
+	std::string path = "models/" + filepath;
 
 
 	// open file
@@ -217,48 +261,60 @@ bool populateMtlLib(
 
 	char line[256];
 
+	bool hasText = false;
+
+	std::string newmtl = "none";
+	std::string map_Kd = "";
+
 	while (inputFile.getline(line, 256))
 	{
 		// a dummy for the first letters
 		char dummy[10];
 
 		char objName[50];
+		
 		sscanf(line, "%s %s", &dummy, &objName);
-
-		if (strcmp(dummy, "newmtl") == 0)
-		{
-			if (mtlObj.newmtl != NULL)
-				textureLib.push_back(mtlObj);
-
-			mtlObj = MtlObj(objName);
-		}
 
 		if (strcmp(dummy, "map_Kd") == 0)
 		{
-			const char * bass = "textures/";
-			char* textPath;
-			textPath = (char*)malloc(strlen(bass) + strlen(objName) + 1);
-			strcpy(textPath, bass);
-			strcat(textPath, objName);
+			std::string textPath = "textures/" + std::string(objName);
 
-			mtlObj.map_Kd = textPath;
+			map_Kd = std::string(textPath);
+			hasText = true;
+		}
+
+		if (strcmp(dummy, "newmtl") == 0)
+		{
+			if (newmtl.compare("none") != 0)
+			{
+				hasText = map_Kd.compare("") == 0 ? false : true;
+				textureLib.push_back(MtlObj(newmtl, map_Kd, hasText));
+
+				map_Kd = "";
+			}
+
+			newmtl = std::string(objName);
+
 		}
 	}
 
-	textureLib.push_back(mtlObj);
+	if (!hasText)
+		map_Kd = std::string("");
+	textureLib.push_back(MtlObj(newmtl, map_Kd, hasText));
 
 	return 0;
 }
 
 int findTexIdx(
-	const char * curTxt,
+	std::string curTxt,
 	std::vector<MtlObj> txtLib
 )
 {
-	int idx = 0;
-	for (std::vector<MtlObj>::iterator it = txtLib.begin(); it != txtLib.end(); ++it, ++idx) {
-		if (strcmp(curTxt, (*it).newmtl))
-			return idx;
+	int idx = -1;
+	for (int i = 0; i < txtLib.size(); i++)
+	{
+		if (curTxt.compare(txtLib[i].newmtl) == 0)
+			return i;
 	}
 
 	printf("Texture not found!!!\n");

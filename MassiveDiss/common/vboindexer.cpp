@@ -130,6 +130,8 @@ void indexVBO(
 				oi.indices.push_back(newindex);
 				VertexToOutIndex[packed] = newindex;
 			}
+
+			oi.txIdx = objInfo[j].txIdx;
 		}
 		out_objInfo.push_back(oi);
 	}

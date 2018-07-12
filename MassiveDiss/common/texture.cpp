@@ -221,7 +221,7 @@ GLuint loadDDS(const char * imagepath){
 GLuint loadStbText(const char * imagepath)
 {
 
-	unsigned int texture;
+	GLuint texture;
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	// set the texture wrapping/filtering options (on the currently bound texture object)
@@ -244,9 +244,9 @@ GLuint loadStbText(const char * imagepath)
 	}
 	else
 	{
-		printf("Failed to load texture\n");
+		printf("Failed to load texture %s\n", imagepath);
 	}
 	stbi_image_free(data);
 
-	return (GLuint)texture;
+	return texture;
 }

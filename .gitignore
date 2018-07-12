@@ -4,3 +4,6 @@
 
 # models can be too big for git
 MassiveDiss/models
+
+# also keeping textures out of it
+MassiveDiss/textures

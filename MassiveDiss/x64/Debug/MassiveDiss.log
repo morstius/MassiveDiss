@@ -1,2 +1,5 @@
 ﻿  MassiveDiss.cpp
+  ModelLoader.cpp
+d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\modelloader.cpp(255): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'std::string'
+  Generating Code...
   MassiveDiss.vcxproj -> D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\x64\Debug\MassiveDiss.exe

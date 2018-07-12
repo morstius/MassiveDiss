@@ -1,6 +1,8 @@
 #ifndef MODELLOADR_HPP
 #define MODELLOADR_HPP
 
+#include <string>
+
 #include "common/types/ObjInfo.h"
 #include "common/types/MtlObj.h"
 
@@ -11,12 +13,12 @@ bool loadObj(
 );
 
 bool populateMtlLib(
-	const char *,
+	std::string,
 	std::vector<MtlObj>&
 );
 
 int findTexIdx(
-	const char *,
+	std::string,
 	std::vector<MtlObj>
 );
 
