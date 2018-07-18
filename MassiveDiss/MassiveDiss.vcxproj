@@ -169,6 +169,7 @@
     <ClInclude Include="common\types\MtlObj.h" />
     <ClInclude Include="common\types\ObjInfo.h" />
     <ClInclude Include="common\vboindexer.hpp" />
+    <ClInclude Include="kdTree.h" />
     <ClInclude Include="lib\stb-masters\stb_image.h" />
     <ClInclude Include="ModelLoader.hpp" />
     <ClInclude Include="stdafx.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="common\text2D.cpp" />
     <ClCompile Include="common\texture.cpp" />
     <ClCompile Include="common\vboindexer.cpp" />
+    <ClCompile Include="kdTree.cpp" />
     <ClCompile Include="MassiveDiss.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="stdafx.cpp">

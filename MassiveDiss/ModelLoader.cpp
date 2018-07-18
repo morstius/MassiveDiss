@@ -252,7 +252,7 @@ bool populateMtlLib(
 	std::ifstream inputFile(path, std::ios::in);
 
 	if (!inputFile.is_open()) {
-		printf("Impossible to open the file %s! Are you in the right path ?\n", path);
+		printf("Impossible to open the file %s! Are you in the right path ?\n", path.c_str());
 		getchar();
 		return false;
 	}

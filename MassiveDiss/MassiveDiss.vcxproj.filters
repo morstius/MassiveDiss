@@ -66,6 +66,9 @@
     <ClInclude Include="common\types\Buffers.h">
       <Filter>common\types</Filter>
     </ClInclude>
+    <ClInclude Include="kdTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -94,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="common\vboindexer.cpp">
       <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="kdTree.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
