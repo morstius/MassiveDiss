@@ -27,6 +27,9 @@ float verticalAngle = 0.0f;
 // Initial Field of View
 float initialFoV = 45.0f;
 
+bool visCheck = true;
+bool tPressed = false;
+
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.0008f;
 
@@ -44,6 +47,11 @@ glm::vec3 getDirection() {
 float getFoV()
 {
 	return initialFoV;
+}
+
+bool getVisCheck()
+{
+	return visCheck;
 }
 
 void computeMatricesFromInputs(GLFWwindow* window, GLFWmonitor* monitor){
@@ -121,6 +129,14 @@ void computeMatricesFromInputs(GLFWwindow* window, GLFWmonitor* monitor){
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
 		glfwSetWindowMonitor(window, NULL, 50, 50, 1024, 768, 0);
 		glViewport(0, 0, 1024, 768);
+	}
+	// Toggle Frustum Culling
+	if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS){
+		tPressed = true;
+	}
+	if (tPressed && glfwGetKey(window, GLFW_KEY_T) == GLFW_RELEASE) {
+		tPressed = false;
+		visCheck = !visCheck;
 	}
 	// Close window
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {

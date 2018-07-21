@@ -13,6 +13,7 @@ struct kdNode
 {
 	bool isLeaf;
 	bool splitX;
+	int idx;
 	ObjInfo objinfo;
 	glm::vec3 point;
 	struct kdNode *left, *right;

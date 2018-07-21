@@ -22,6 +22,9 @@
     <Filter Include="common\types">
       <UniqueIdentifier>{3437006f-ca1a-435b-a6ca-0165950e0fa3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common\helpers">
+      <UniqueIdentifier>{b7d2de52-5633-4bc8-8d8c-549f712d2c1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -68,6 +71,9 @@
     </ClInclude>
     <ClInclude Include="kdTree.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\helpers\xline.h">
+      <Filter>common\helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

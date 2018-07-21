@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="common\controls.hpp" />
+    <ClInclude Include="common\helpers\xline.h" />
     <ClInclude Include="common\objloader.hpp" />
     <ClInclude Include="common\shader.hpp" />
     <ClInclude Include="common\text2D.hpp" />
