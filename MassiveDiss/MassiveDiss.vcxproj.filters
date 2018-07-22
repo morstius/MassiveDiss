@@ -69,6 +69,9 @@
     <ClInclude Include="kdTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="common\frustum.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

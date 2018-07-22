@@ -10,19 +10,6 @@ using namespace glm;
 class ObjInfo
 {
 public:
-
-	// for sorting the x value
-	bool operator < (const ObjInfo& oi) const
-	{
-		return (_center.x < oi._center.x);
-	}
-
-	// for sorting the y value
-	bool operator > (const ObjInfo& oi) const
-	{
-		return (_center.y < oi._center.y);
-	}
-
 	glm::vec3 center()
 	{
 		if (_center.x == INFINITY)
@@ -43,31 +30,26 @@ public:
 		return _center;
 	}
 
-	float size(float& minX, float& maxX, float& minZ, float& maxZ)
+	float size()
 	{
-		if (_minX == _maxX)
+		if (_size != 0.0f)
+			return _size;
+
+		glm::vec3 c = center();
+
+		float max_length = 0.0f;
+
+		for (int i = 0; i < vertices.size(); i++)
 		{
-			for (int i = 0; i < vertices.size(); i++)
-			{
-				if (vertices[i].x < _minX)
-					_minX = vertices[i].x;
+			glm::vec3 t = vertices[i] - c;
 
-				if (vertices[i].x > _maxX)
-					_maxX = vertices[i].x;
+			float test2 = t.x * t.x + t.y * t.y + t.z * t.z;
 
-				if (vertices[i].z < _minZ)
-					_minZ = vertices[i].z;
-
-				if (vertices[i].z > _maxZ)
-					_maxZ = vertices[i].z;
-			}
+			if (test2 > max_length)
+				max_length = test2;
 		}
 
-		minX = _minX;
-		maxX = _maxX;
-
-		minZ = _minZ;
-		maxZ = _maxZ;
+		_size = sqrt(max_length);
 	}
 
 	std::vector<glm::vec3> vertices;
@@ -78,10 +60,7 @@ public:
 
 private:
 	glm::vec3 _center = glm::vec3(INFINITY);
-	float _minX = 0;
-	float _maxX = 0;
-	float _minZ = 0;
-	float _maxZ = 0;
+	float _size = 0.0f;
 };
 
 #endif // !OBJINFO_H

@@ -1,3 +1,3 @@
 ﻿  MassiveDiss.cpp
-d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\massivediss.cpp(160): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\common\types\objinfo.h(53): warning C4715: 'ObjInfo::size': not all control paths return a value
   MassiveDiss.vcxproj -> D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\x64\Debug\MassiveDiss.exe
