@@ -30,6 +30,12 @@ float initialFoV = 45.0f;
 bool visCheck = true;
 bool tPressed = false;
 
+bool occlusionCullingEnabled = false;
+bool cPressed = false;
+
+bool mode = true;
+bool mPressed = false;
+
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.0008f;
 
@@ -52,6 +58,16 @@ float getFoV()
 bool getVisCheck()
 {
 	return visCheck;
+}
+
+bool getOccCheck()
+{
+	return occlusionCullingEnabled;
+}
+
+bool getMode()
+{
+	return mode;
 }
 
 void computeMatricesFromInputs(GLFWwindow* window, GLFWmonitor* monitor){
@@ -130,6 +146,8 @@ void computeMatricesFromInputs(GLFWwindow* window, GLFWmonitor* monitor){
 		glfwSetWindowMonitor(window, NULL, 50, 50, 1024, 768, 0);
 		glViewport(0, 0, 1024, 768);
 	}
+
+
 	// Toggle Frustum Culling
 	if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS){
 		tPressed = true;
@@ -138,6 +156,23 @@ void computeMatricesFromInputs(GLFWwindow* window, GLFWmonitor* monitor){
 		tPressed = false;
 		visCheck = !visCheck;
 	}
+	// Toggle Occlusion Culling
+	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
+		cPressed = true;
+	}
+	if (cPressed && glfwGetKey(window, GLFW_KEY_C) == GLFW_RELEASE) {
+		cPressed = false;
+		occlusionCullingEnabled = !occlusionCullingEnabled;
+	}
+	// Toggle Drawing Mode
+	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
+		mPressed = true;
+	}
+	if (mPressed && glfwGetKey(window, GLFW_KEY_M) == GLFW_RELEASE) {
+		mPressed = false;
+		mode = !mode;
+	}
+
 	// Close window
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, GLFW_TRUE);

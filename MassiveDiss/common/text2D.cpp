@@ -78,6 +78,8 @@ void printText2D(const char * text, int x, int y, int size){
 	glBindBuffer(GL_ARRAY_BUFFER, Text2DUVBufferID);
 	glBufferData(GL_ARRAY_BUFFER, UVs.size() * sizeof(glm::vec2), &UVs[0], GL_STATIC_DRAW);
 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	// Bind shader
 	glUseProgram(Text2DShaderID);
 

@@ -9,5 +9,8 @@ glm::vec3 getPosition();
 glm::vec3 getDirection();
 float getFoV();
 bool getVisCheck();
+bool getOccCheck();
+
+bool getMode();
 
 #endif
