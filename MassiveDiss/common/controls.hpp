@@ -12,5 +12,6 @@ bool getVisCheck();
 bool getOccCheck();
 
 bool getMode();
+bool showBounding();
 
 #endif

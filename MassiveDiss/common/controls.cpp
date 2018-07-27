@@ -36,6 +36,9 @@ bool cPressed = false;
 bool mode = true;
 bool mPressed = false;
 
+bool showBoundingVolume = false;
+bool vPressed = false;
+
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.0008f;
 
@@ -68,6 +71,11 @@ bool getOccCheck()
 bool getMode()
 {
 	return mode;
+}
+
+bool showBounding()
+{
+	return showBoundingVolume;
 }
 
 void computeMatricesFromInputs(GLFWwindow* window, GLFWmonitor* monitor){
@@ -171,6 +179,14 @@ void computeMatricesFromInputs(GLFWwindow* window, GLFWmonitor* monitor){
 	if (mPressed && glfwGetKey(window, GLFW_KEY_M) == GLFW_RELEASE) {
 		mPressed = false;
 		mode = !mode;
+	}
+	// Toggle Show Bounding Volume
+	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) {
+		vPressed = true;
+	}
+	if (vPressed && glfwGetKey(window, GLFW_KEY_V) == GLFW_RELEASE) {
+		vPressed = false;
+		showBoundingVolume = !showBoundingVolume;
 	}
 
 	// Close window
