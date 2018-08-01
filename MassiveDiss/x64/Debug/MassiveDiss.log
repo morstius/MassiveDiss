@@ -1,12 +1,14 @@
-﻿  MassiveDiss.cpp
-d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\common\types\objinfo.h(127): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  ModelLoader.cpp
-d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\common\types\objinfo.h(127): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+﻿  stdafx.cpp
+  readWrite.cpp
+  controls.cpp
+  shader.cpp
+  text2D.cpp
+  texture.cpp
   vboindexer.cpp
-d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\common\types\objinfo.h(127): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   kdTree.cpp
-d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\common\types\objinfo.h(127): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  MassiveDiss.cpp
+  ModelLoader.cpp
+  profile.cpp
   Generating Code...
-d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\common\types\objinfo.h(67): warning C4715: 'ObjInfo::size': not all control paths return a value
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   MassiveDiss.vcxproj -> D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\x64\Debug\MassiveDiss.exe

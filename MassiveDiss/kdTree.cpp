@@ -3,10 +3,19 @@
 using namespace glm;
 
 #include <vector>
+#include <algorithm>
 
 #include "common/types/ObjInfo.h"
 
 #include "kdTree.h"
+
+// for profiling
+#include <ctime>
+#include <chrono>
+
+std::chrono::duration<double> time_sorting;
+std::chrono::duration<double> time_creatingLeafNode;
+std::chrono::duration<double> time_creatingIntNode;
 
 kdNode* kdTreeConstruct(std::vector<ObjInfo> objectSet, int depth, int size)
 {
@@ -18,6 +27,8 @@ kdNode* kdTreeConstruct(std::vector<ObjInfo> objectSet, int depth, int size)
 	{
 		std::vector<ObjInfo> leftHalf, rightHalf;
 		ObjInfo objInfo;
+
+		std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 		if (depth % 2 == 0) // even
 		{
 			objInfo = XSplit(objectSet, leftHalf, rightHalf);
@@ -26,6 +37,8 @@ kdNode* kdTreeConstruct(std::vector<ObjInfo> objectSet, int depth, int size)
 		{
 			objInfo = ZSplit(objectSet, leftHalf, rightHalf);
 		}
+		std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+		time_sorting += std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
 
 		kdNode *leftNode = nullptr, *rightNode = nullptr;
 		if((int)leftHalf.size() > 0)
@@ -106,12 +119,17 @@ std::vector<ObjInfo> sort(std::vector<ObjInfo> objInfo, bool sortX)
 			stop = true;
 	}
 
-	return res;
+	return res;	
 }
+
+bool xCompare(const ObjInfo &a, const ObjInfo &b) { return (a._center.x < b._center.x); }
+
 
 ObjInfo XSplit(std::vector<ObjInfo> objectSet, std::vector<ObjInfo>& leftHalf, std::vector<ObjInfo>& rightHalf)
 {
-	objectSet = sort(objectSet, true);
+	//objectSet = sort(objectSet, true);
+
+	std::sort(objectSet.begin(), objectSet.end(), xCompare);
 
 	int half = (int)objectSet.size() / 2;
 
@@ -130,9 +148,13 @@ ObjInfo XSplit(std::vector<ObjInfo> objectSet, std::vector<ObjInfo>& leftHalf, s
 	return objectSet[half];
 }
 
+bool zCompare(const ObjInfo &a, const ObjInfo &b) { return (a._center.z < b._center.z); }
+
 ObjInfo ZSplit(std::vector<ObjInfo> objectSet, std::vector<ObjInfo>& leftHalf, std::vector<ObjInfo>& rightHalf)
 {
-	objectSet = sort(objectSet, false);
+	//objectSet = sort(objectSet, false);
+
+	std::sort(objectSet.begin(), objectSet.end(), zCompare);
 
 	int half = (int)objectSet.size() / 2;
 
@@ -153,6 +175,7 @@ ObjInfo ZSplit(std::vector<ObjInfo> objectSet, std::vector<ObjInfo>& leftHalf, s
 
 kdNode* CreateInteriorNode(ObjInfo objInfo, kdNode* leftHalf, kdNode* rightHalf, bool splitX)
 {
+	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 	kdNode* kd = new kdNode();
 
 	kd->isLeaf = false;
@@ -163,16 +186,32 @@ kdNode* CreateInteriorNode(ObjInfo objInfo, kdNode* leftHalf, kdNode* rightHalf,
 	kd->left = leftHalf;
 	kd->right = rightHalf;
 
+	std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+	time_creatingIntNode += std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+	
+	
+	kd->time_sorting = time_sorting;
+	kd->time_creatingIntNode = time_creatingIntNode;
+	kd->time_creatingLeafNode = time_creatingLeafNode;
+
 	return kd;
 }
 
 kdNode* CreateLeafNode(std::vector<ObjInfo> objectSet)
 {
+	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 	kdNode* kd = new kdNode();
 
 	kd->isLeaf = true;
 
 	kd->objinfo = objectSet[0];
+
+	std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+	time_creatingLeafNode += std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+
+	kd->time_sorting = time_sorting;
+	kd->time_creatingIntNode = time_creatingIntNode;
+	kd->time_creatingLeafNode = time_creatingLeafNode;
 
 	return kd;
 }

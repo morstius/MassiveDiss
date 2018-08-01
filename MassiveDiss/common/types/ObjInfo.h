@@ -15,8 +15,8 @@ public:
 	ObjInfo()
 	{
 		//Init
-		glCreateVertexArrays(1, &boundingBoxArray);
-
+		//glCreateVertexArrays(1, &boundingBoxArray);
+		this->center();
 	}
 	~ObjInfo()
 	{
@@ -25,7 +25,7 @@ public:
 	glm::vec3 center()
 	{
 		// calculate the position of the center
-		if (_center.x == INFINITY)
+		if (_center.x == INFINITY || _center == glm::vec3(0) || isnan(_center.x))
 		{
 			glm::vec3 sum = glm::vec3(0.0f);
 			for (int i = 0; i < vertices.size(); i++)
@@ -64,6 +64,7 @@ public:
 		}
 
 		_size = sqrt(max_length);
+		return _size;
 	}
 
 	void boundingBox()
@@ -124,7 +125,7 @@ public:
 			boundingVert.push_back(glm::vec3(min.x, max.y, max.z));
 		}
 
-		boundingBoxNumVertices = (size_t)boundingVert.size();
+		boundingBoxNumVertices = (int)boundingVert.size();
 	}
 
 	std::vector<glm::vec3> vertices;
@@ -150,8 +151,9 @@ public:
 	GLuint normalbuffer;
 	GLuint elembuffer;
 
+	glm::vec3 _center;
+
 private:
-	glm::vec3 _center = glm::vec3(INFINITY);
 	float _size = 0.0f;
 };
 

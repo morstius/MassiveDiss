@@ -31,7 +31,7 @@ bool loadObj(
 	std::ifstream inputFile(path, std::ios::in);
 
 	if (!inputFile.is_open()) {
-		printf("Impossible to open the file %s! Are you in the right path ?\n", path);
+		printf("Can't open the file %s!\n", path);
 		getchar();
 		return false;
 	}
@@ -142,7 +142,7 @@ bool loadObj(
 					}
 					default:
 					{
-						printf("File can't be read by our simple parser! Try exporting with other options\n");
+						printf("Obj format not as expected.\n");
 						inputFile.close();
 						return false;
 					}
@@ -156,6 +156,7 @@ bool loadObj(
 				char objName[256];
 				sscanf(line, "%s %s", dummy, &objName);
 
+				// create object to add onto the vector 
 				if (vertexIndices.size() != 0)
 				{
 					IdxInfo ii = IdxInfo();
@@ -175,6 +176,7 @@ bool loadObj(
 			}
 			case 'm':
 			{
+				// load the material lib file
 				char objName[50];
 				sscanf(line, "%s %s", &dummy, &objName);
 				if (strcmp(dummy, "mtllib") == 0)
@@ -190,6 +192,7 @@ bool loadObj(
 			}
 			case 'u':
 			{
+				// set the right material per object
 				char objName[256];
 				sscanf(line, "%s %s", &dummy, &objName);
 
@@ -202,6 +205,7 @@ bool loadObj(
 		}
 	}
 
+	//add the last idx info to the vector
 	IdxInfo ii = IdxInfo();
 	ii.normalIndices = normalIndices;
 	ii.uvIndices = uvIndices;
@@ -240,13 +244,13 @@ bool loadObj(
 	return 0;
 }
 
+// Read the material file and create a texture lib object with texture paths
 bool populateMtlLib(
 	std::string filepath,
 	std::vector<MtlObj>& textureLib
 )
 {
 	std::string path = "models/" + filepath;
-
 
 	// open file
 	std::ifstream inputFile(path, std::ios::in);
@@ -257,10 +261,11 @@ bool populateMtlLib(
 		return false;
 	}
 
+	// create new material object
 	MtlObj mtlObj = MtlObj();
 
+	// initialize variables
 	char line[256];
-
 	bool hasText = false;
 
 	std::string newmtl = "none";
@@ -277,6 +282,7 @@ bool populateMtlLib(
 
 		if (strcmp(dummy, "map_Kd") == 0)
 		{
+			// populate the texture path
 			std::string textPath = "textures/" + std::string(objName);
 
 			map_Kd = std::string(textPath);
@@ -285,6 +291,7 @@ bool populateMtlLib(
 
 		if (strcmp(dummy, "newmtl") == 0)
 		{
+			// new material type
 			if (newmtl.compare("none") != 0)
 			{
 				hasText = map_Kd.compare("") == 0 ? false : true;
@@ -298,8 +305,10 @@ bool populateMtlLib(
 		}
 	}
 
+	// if there is no texture then setting the path as an empty string
 	if (!hasText)
 		map_Kd = std::string("");
+
 	textureLib.push_back(MtlObj(newmtl, map_Kd, hasText));
 
 	return 0;
@@ -310,6 +319,7 @@ int findTexIdx(
 	std::vector<MtlObj> txtLib
 )
 {
+	//find the index of the texture in the texture lib
 	int idx = -1;
 	for (int i = 0; i < txtLib.size(); i++)
 	{

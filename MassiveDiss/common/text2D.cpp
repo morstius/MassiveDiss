@@ -7,10 +7,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 using namespace glm;
 
-#include "shader.hpp"
-#include "texture.hpp"
+#include "shader.h"
+#include "texture.h"
 
-#include "text2D.hpp"
+#include "text2D.h"
 
 unsigned int Text2DTextureID;
 unsigned int Text2DVertexBufferID;
@@ -20,26 +20,25 @@ unsigned int Text2DUniformID;
 
 void initText2D(const char * texturePath){
 
-	// Initialize texture
+	// load in texture
 	Text2DTextureID = loadDDS(texturePath);
 
-	// Initialize VBO
+	// initialize the VBO
 	glGenBuffers(1, &Text2DVertexBufferID);
 	glGenBuffers(1, &Text2DUVBufferID);
 
-	// Initialize Shader
+	// initialize the shaders
 	Text2DShaderID = LoadShaders( "shaders/TextVertexShader.vertexshader", "shaders/TextVertexShader.fragmentshader");
 
-	// Initialize uniforms' IDs
-	Text2DUniformID = glGetUniformLocation( Text2DShaderID, "myTextureSampler" );
-
+	// get handle on shaders
+	Text2DUniformID = glGetUniformLocation( Text2DShaderID, "texSampler" );
 }
 
 void printText2D(const char * text, int x, int y, int size){
 
 	unsigned int length = (unsigned int)strlen(text);
 
-	// Fill buffers
+	// fill buffers
 	std::vector<glm::vec2> vertices;
 	std::vector<glm::vec2> UVs;
 	for ( unsigned int i=0 ; i<length ; i++ ){
@@ -86,7 +85,6 @@ void printText2D(const char * text, int x, int y, int size){
 	// Bind texture
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, Text2DTextureID);
-	// Set our "myTextureSampler" sampler to use Texture Unit 0
 	glUniform1i(Text2DUniformID, 0);
 
 	// 1st attribute buffer : vertices

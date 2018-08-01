@@ -7,45 +7,37 @@
 class Frustum
 {
 public:
-	enum side { LEFT = 0, RIGHT = 1, TOP = 2, BOTTOM = 3, BACK = 4, FRONT = 5 };
 	std::array<glm::vec4, 6> planes;
 
 	void update(glm::mat4 matrix)
 	{
-		planes[LEFT].x = matrix[0].w + matrix[0].x;
-		planes[LEFT].y = matrix[1].w + matrix[1].x;
-		planes[LEFT].z = matrix[2].w + matrix[2].x;
-		planes[LEFT].w = matrix[3].w + matrix[3].x;
+		glm::vec4 mat = glm::vec4(matrix[0].w, matrix[1].w, matrix[2].w, matrix[3].w);
+		glm::vec4 matX = glm::vec4(matrix[0].x, matrix[1].x, matrix[2].x, matrix[3].x);
+		glm::vec4 matY = glm::vec4(matrix[0].y, matrix[1].y, matrix[2].y, matrix[3].y);
+		glm::vec4 matZ = glm::vec4(matrix[0].z, matrix[1].z, matrix[2].z, matrix[3].z);
+		
+		//left plane
+		planes[0] = mat + matX;
 
-		planes[RIGHT].x = matrix[0].w - matrix[0].x;
-		planes[RIGHT].y = matrix[1].w - matrix[1].x;
-		planes[RIGHT].z = matrix[2].w - matrix[2].x;
-		planes[RIGHT].w = matrix[3].w - matrix[3].x;
+		//right plane
+		planes[1] = mat - matX;
+		
+		//bottom plane
+		planes[2] = mat + matY;
 
-		planes[TOP].x = matrix[0].w - matrix[0].y;
-		planes[TOP].y = matrix[1].w - matrix[1].y;
-		planes[TOP].z = matrix[2].w - matrix[2].y;
-		planes[TOP].w = matrix[3].w - matrix[3].y;
+		//top plane
+		planes[3] = mat - matY;
 
-		planes[BOTTOM].x = matrix[0].w + matrix[0].y;
-		planes[BOTTOM].y = matrix[1].w + matrix[1].y;
-		planes[BOTTOM].z = matrix[2].w + matrix[2].y;
-		planes[BOTTOM].w = matrix[3].w + matrix[3].y;
+		//back plane
+		planes[4] = mat + matZ;
+		
+		//front plane
+		planes[5] = mat - matZ;
 
-		planes[BACK].x = matrix[0].w + matrix[0].z;
-		planes[BACK].y = matrix[1].w + matrix[1].z;
-		planes[BACK].z = matrix[2].w + matrix[2].z;
-		planes[BACK].w = matrix[3].w + matrix[3].z;
-
-		planes[FRONT].x = matrix[0].w - matrix[0].z;
-		planes[FRONT].y = matrix[1].w - matrix[1].z;
-		planes[FRONT].z = matrix[2].w - matrix[2].z;
-		planes[FRONT].w = matrix[3].w - matrix[3].z;
-
+		//normalize
 		for (auto i = 0; i < planes.size(); i++)
 		{
-			float length = sqrtf(planes[i].x * planes[i].x + planes[i].y * planes[i].y + planes[i].z * planes[i].z);
-			planes[i] /= length;
+			planes[i] = glm::normalize(planes[i]);
 		}
 	}
 
@@ -53,6 +45,7 @@ public:
 	{
 		for (auto i = 0; i < planes.size(); i++)
 		{
+			// check if bounding sphere for object is inside the frustum
 			if ((planes[i].x * pos.x) + (planes[i].y * pos.y) + (planes[i].z * pos.z) + planes[i].w <= -radius)
 			{
 				return false;

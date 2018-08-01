@@ -36,24 +36,6 @@
     <ClInclude Include="lib\stb-masters\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\objloader.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\controls.hpp">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="common\shader.hpp">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="common\text2D.hpp">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="common\texture.hpp">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="common\vboindexer.hpp">
-      <Filter>common</Filter>
-    </ClInclude>
     <ClInclude Include="common\types\ObjInfo.h">
       <Filter>common\types</Filter>
     </ClInclude>
@@ -63,14 +45,32 @@
     <ClInclude Include="common\types\IdxInfo.h">
       <Filter>common\types</Filter>
     </ClInclude>
-    <ClInclude Include="common\types\Buffers.h">
-      <Filter>common\types</Filter>
-    </ClInclude>
     <ClInclude Include="kdTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="common\frustum.h">
       <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="profile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\controls.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\shader.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\text2D.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\texture.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\vboindexer.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="readWrite.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -81,9 +81,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ModelLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\objloader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="common\controls.cpp">
@@ -102,6 +99,12 @@
       <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="kdTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="profile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="readWrite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
