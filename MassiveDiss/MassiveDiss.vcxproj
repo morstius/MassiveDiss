@@ -197,6 +197,10 @@
   <ItemGroup>
     <None Include="shaders\base.fragmentshader" />
     <None Include="shaders\base.vertexshader" />
+    <None Include="shaders\boundingbox.fragmentshader" />
+    <None Include="shaders\boundingbox.vertexshader" />
+    <None Include="shaders\TextVertexShader.fragmentshader" />
+    <None Include="shaders\TextVertexShader.vertexshader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

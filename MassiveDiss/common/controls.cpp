@@ -42,15 +42,27 @@ bool vPressed = false;
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.0005f;
 
-glm::vec3 getPosition() {
+glm::vec3 getPosition() 
+{
 	return position;
 }
-glm::vec3 getDirection() {
+glm::vec3 getDirection() 
+{
 	return glm::vec3(
 		cos(verticalAngle) * sin(horizontalAngle),
 		sin(verticalAngle),
 		cos(verticalAngle) * cos(horizontalAngle)
 	);
+}
+
+float getHorizontal()
+{
+	return horizontalAngle;
+}
+
+float getVertical()
+{
+	return verticalAngle;
 }
 
 bool getVisCheck()
@@ -135,19 +147,23 @@ void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor)
 	glm::vec3 up = glm::cross(right, direction);
 
 	// Move forward
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS 
+		|| glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		position += horizontalDir * dt * speed;
 	}
 	// Move backward
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS 
+		|| glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
 		position -= horizontalDir * dt * speed;
 	}
 	// Strafe right
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS 
+		|| glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 		position += right * dt * speed;
 	}
 	// Strafe left
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS 
+		|| glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
 		position -= right * dt * speed;
 	}
 	// Go up
@@ -217,7 +233,6 @@ void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor)
 		vPressed = false;
 		showBoundingVolume = !showBoundingVolume;
 	}
-
 
 
 	// Close window

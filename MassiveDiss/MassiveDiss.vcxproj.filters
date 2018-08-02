@@ -115,5 +115,17 @@
     <None Include="shaders\base.fragmentshader">
       <Filter>shaders</Filter>
     </None>
+    <None Include="shaders\boundingbox.fragmentshader">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\boundingbox.vertexshader">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\TextVertexShader.fragmentshader">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\TextVertexShader.vertexshader">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

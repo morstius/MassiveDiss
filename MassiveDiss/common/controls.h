@@ -11,6 +11,9 @@ glm::mat4 getProjectionMatrix();
 glm::vec3 getPosition();
 glm::vec3 getDirection();
 
+float getVertical();
+float getHorizontal();
+
 bool getVisCheck();
 bool getOccCheck();
 

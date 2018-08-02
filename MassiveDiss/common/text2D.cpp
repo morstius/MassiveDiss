@@ -102,10 +102,14 @@ void draw(GLsizei size)
 
 	// draw call
 	glDrawArrays(GL_TRIANGLES, 0, size);
+
+	// disable blend after drawing
+	glDisable(GL_BLEND);
 }
 
 void printText2D(const char * text, int x, int y, int size)
 {
+	// length of the text to render
 	unsigned int length = (unsigned int)strlen(text);
 
 	// fill buffers
@@ -128,8 +132,6 @@ void printText2D(const char * text, int x, int y, int size)
 	glBufferData(GL_ARRAY_BUFFER, UVs.size() * sizeof(glm::vec2), &UVs[0], GL_STATIC_DRAW);
 
 	draw((GLsizei)vertices.size());
-
-	glDisable(GL_BLEND);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
