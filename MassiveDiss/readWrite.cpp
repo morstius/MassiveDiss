@@ -23,6 +23,9 @@ void writeFile(const std::vector<ObjInfo>& objInfo, const std::vector<MtlObj>& t
 	// write each object in vector
 	for (int i = 0; i < objInfo.size(); ++i)
 	{
+		if (objInfo[i].vertices.size() < 1 || objInfo[i].indices.size() < 1)
+			continue;
+
 		fprintf(file, "o obj %d\n", i);
 		fprintf(file, "t %s\n", textureLib[objInfo[i].txIdx].map_Kd.c_str());
 		for (int j = 0; j < objInfo[i].vertices.size(); ++j)
@@ -30,6 +33,11 @@ void writeFile(const std::vector<ObjInfo>& objInfo, const std::vector<MtlObj>& t
 			fprintf(file, "v %f %f %f\n", objInfo[i].vertices[j].x, objInfo[i].vertices[j].y, objInfo[i].vertices[j].z);
 			fprintf(file, "vt %f %f\n", objInfo[i].uvs[j].x, objInfo[i].uvs[j].y);
 			fprintf(file, "vn %f %f %f\n", objInfo[i].normals[j].x, objInfo[i].normals[j].y, objInfo[i].normals[j].z);
+		}
+
+		for (int j = 0; j < objInfo[i].boundingVert.size(); ++j)
+		{
+			fprintf(file, "b %f %f %f\n", objInfo[i].boundingVert[j].x, objInfo[i].boundingVert[j].y, objInfo[i].boundingVert[j].z);
 		}
 
 		for (int j = 0; j < objInfo[i].indices.size(); ++j)
@@ -130,6 +138,14 @@ void readFile(std::vector<ObjInfo>& objInfo, std::vector<MtlObj>& textureLib, st
 				int idx;
 				sscanf(line, "%s %d", dummy, &idx);
 				oi.indices.push_back(idx);
+				break;
+			}
+			case 'b':
+			{
+				// boundingbox
+				glm::vec3 vec;
+				sscanf(line, "%s %f %f %f", dummy, &(vec.x), &(vec.y), &(vec.z));
+				oi.boundingVert.push_back(vec);
 				break;
 			}
 		}

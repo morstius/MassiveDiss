@@ -43,6 +43,107 @@ public:
 		return _center;
 	}
 
+	void createBoundingBox()
+	{
+		if (this->vertices.size() <= 0)
+			return;
+
+		float minX, maxX, minY, maxY, minZ, maxZ;
+
+		minX = this->vertices[0].x;
+		maxX = this->vertices[0].x;
+
+		minY = this->vertices[0].y;
+		maxY = this->vertices[0].y;
+
+		minZ = this->vertices[0].z;
+		maxZ = this->vertices[0].z;
+
+		for (int j = 0; j < this->vertices.size(); ++j)
+		{
+			if (this->vertices[j].x < minX)
+				minX = this->vertices[j].x;
+			if (this->vertices[j].x > maxX)
+				maxX = this->vertices[j].x;
+
+			if (this->vertices[j].y < minY)
+				minY = this->vertices[j].y;
+			if (this->vertices[j].y > maxY)
+				maxY = this->vertices[j].y;
+
+			if (this->vertices[j].z < minZ)
+				minZ = this->vertices[j].z;
+			if (this->vertices[j].z > maxZ)
+				maxZ = this->vertices[j].z;
+		}
+
+		glm::vec3 up_left_deep = glm::vec3(minX, maxY, maxZ);
+		glm::vec3 up_left_near = glm::vec3(minX, maxY, minZ);
+
+		glm::vec3 up_right_deep = glm::vec3(maxX, maxY, maxZ);
+		glm::vec3 up_right_near = glm::vec3(maxX, maxY, minZ);
+
+		glm::vec3 down_left_deep = glm::vec3(minX, minY, maxZ);
+		glm::vec3 down_left_near = glm::vec3(minX, minY, minZ);
+
+		glm::vec3 down_right_deep = glm::vec3(maxX, minY, maxZ);
+		glm::vec3 down_right_near = glm::vec3(maxX, minY, minZ);
+
+		// deep
+		this->boundingVert.push_back(up_left_deep);
+		this->boundingVert.push_back(down_left_deep);
+		this->boundingVert.push_back(up_right_deep);
+
+		this->boundingVert.push_back(down_right_deep);
+		this->boundingVert.push_back(up_right_deep);
+		this->boundingVert.push_back(down_left_deep);
+
+		// near
+		this->boundingVert.push_back(up_left_near);
+		this->boundingVert.push_back(up_right_near);
+		this->boundingVert.push_back(down_left_near);
+
+		this->boundingVert.push_back(down_right_near);
+		this->boundingVert.push_back(down_left_near);
+		this->boundingVert.push_back(up_right_near);
+
+		// left
+		this->boundingVert.push_back(up_left_deep);
+		this->boundingVert.push_back(up_left_near);
+		this->boundingVert.push_back(down_left_near);
+
+		this->boundingVert.push_back(down_left_near);
+		this->boundingVert.push_back(down_left_deep);
+		this->boundingVert.push_back(up_left_deep);
+
+		// right
+		this->boundingVert.push_back(up_right_deep);
+		this->boundingVert.push_back(down_right_near);
+		this->boundingVert.push_back(up_right_near);
+
+		this->boundingVert.push_back(down_right_near);
+		this->boundingVert.push_back(up_right_deep);
+		this->boundingVert.push_back(down_right_deep);
+
+		// top
+		this->boundingVert.push_back(up_right_deep);
+		this->boundingVert.push_back(up_left_near);
+		this->boundingVert.push_back(up_left_deep);
+
+		this->boundingVert.push_back(up_right_deep);
+		this->boundingVert.push_back(up_right_near);
+		this->boundingVert.push_back(up_left_near);
+
+		// bottom
+		this->boundingVert.push_back(down_right_deep);
+		this->boundingVert.push_back(down_left_deep);
+		this->boundingVert.push_back(down_left_near);
+
+		this->boundingVert.push_back(down_right_deep);
+		this->boundingVert.push_back(down_left_near);
+		this->boundingVert.push_back(down_right_near);
+	}
+
 	float size()
 	{
 		if (_size != 0.0f)
