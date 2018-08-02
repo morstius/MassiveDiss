@@ -179,7 +179,7 @@ public:
 	glm::vec3 min;
 	glm::vec3 max;
 
-	GLuint query;
+	GLuint queryID;
 	bool queryInProgress = false;
 	bool occluded = false;
 
