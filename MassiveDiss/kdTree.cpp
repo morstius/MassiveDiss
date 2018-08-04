@@ -12,9 +12,9 @@ using namespace glm;
 bool zCompare(const ObjInfo &a, const ObjInfo &b) { return (a._center.z < b._center.z); }
 bool xCompare(const ObjInfo &a, const ObjInfo &b) { return (a._center.x < b._center.x); }
 
-kdNode* kdTreeConstruct(std::vector<ObjInfo> objectSet, int depth, int size)
+kdNode* kdTreeConstruct(std::vector<ObjInfo>& objectSet, int depth, int size)
 {
-	if (size <= 3)
+	if (size <= 1)
 	{
 		// creating a leaf node
 		return CreateLeafNode(objectSet);

@@ -45,7 +45,7 @@ public:
 	{
 		for (auto i = 0; i < frustPlanes.size(); i++)
 		{
-			// check if bounding sphere for object is inside the frustum
+			// check if bounding sphere for object is inside the frustum, dot product
 			if ((frustPlanes[i].x * pos.x) + (frustPlanes[i].y * pos.y) + (frustPlanes[i].z * pos.z) + frustPlanes[i].w <= -radius)
 			{
 				return false;

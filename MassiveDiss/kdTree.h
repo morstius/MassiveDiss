@@ -28,7 +28,7 @@ struct kdNode
 	std::vector<ObjInfo> objInfo;
 };
 
-kdNode* kdTreeConstruct(std::vector<ObjInfo>, int, int);
+kdNode* kdTreeConstruct(std::vector<ObjInfo>&, int, int);
 
 void XSplit(const std::vector<ObjInfo>&, std::vector<ObjInfo>&, std::vector<ObjInfo>&);
 

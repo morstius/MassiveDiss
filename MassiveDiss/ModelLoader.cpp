@@ -337,12 +337,16 @@ int findTexIdx(
 
 struct attributeCombo
 {
+	// constructor
 	attributeCombo(glm::vec3 v, glm::vec2 u, glm::vec3 n) 
 		: vertex(v), uv(u), normal(n)
 	{}
 
-	bool operator<(const attributeCombo that) const {
-		return memcmp((void*)this, (void*)&that, sizeof(attributeCombo))>0;
+	// overwriting the compare operator for the find function
+	bool operator<(const attributeCombo ac) const 
+	{
+		// checking if this and the ac obj are the same
+		return std::memcmp((void*)this, (void*)(&ac), sizeof(attributeCombo)) > 0;
 	};
 
 	glm::vec3 vertex;
@@ -355,8 +359,11 @@ int exists(
 	 attributeCombo& combo
 )
 {
+	// try to find the combo in the map
 	std::map<attributeCombo, int>::iterator i = map.find(combo);
 
+	// if it is found we return the second value, which is the existing index
+	// otherwise returning a -1 for it not being in there
 	if (map.find(combo) != map.end())
 		return i->second;
 	else
@@ -371,6 +378,7 @@ void vboIndex(
 	// loop through every element
 	for (int i = 0; i < objInfo.size(); ++i)
 	{
+		// trying to use the map function to speed up the lookup
 		std::map<attributeCombo, int> map;
 		int idx = 0;
 		ObjInfo oi;
@@ -393,9 +401,11 @@ void vboIndex(
 			}
 			else
 			{
+				// it was alredy there so just adding the index
 				oi.indices.push_back(index);
 			}
 		}
+		// need the texture index
 		oi.txIdx = objInfo[i].txIdx;
 
 		out_objInfo.push_back(oi);

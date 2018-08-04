@@ -13,6 +13,7 @@
 #define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
 #define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
+// a loader for .DDS textures, only used for the default texture
 GLuint loadDDS(const char * imagepath){
 
 	unsigned char header[124];
@@ -118,13 +119,14 @@ GLuint loadStbText(const char * imagepath)
 
 	// load and generate the texture
 	int width, height, nrChannels;
-	stbi_uc *data = stbi_load(imagepath, &width, &height, &nrChannels, 0);
+	char* data = (char*)stbi_load(imagepath, &width, &height, &nrChannels, 0);
 
 	// color format might include alpha and might not
 	GLint format = GL_RGB;
 	if (nrChannels == 4)
 		format = GL_RGBA;
 
+	// check if the texture was read successfully 
 	if (data)
 	{
 		// succesfully read in texture file
