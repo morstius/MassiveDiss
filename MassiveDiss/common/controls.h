@@ -1,9 +1,9 @@
 #ifndef CONTROLS_H
 #define CONTROLS_H
 
-void computeMatricesFromInputs(GLFWwindow*, GLFWmonitor*, float, float);
-void handleMouse(GLFWwindow*, float, float);
-void handleKeyboard(GLFWwindow*, GLFWmonitor*);
+void computeMVP(GLFWwindow*, GLFWmonitor*, int, int);
+void handleMouse(GLFWwindow*, int, int);
+void handleKeyboard(GLFWwindow*, GLFWmonitor*, int, int);
 
 glm::mat4 getViewMatrix();
 glm::mat4 getProjectionMatrix();

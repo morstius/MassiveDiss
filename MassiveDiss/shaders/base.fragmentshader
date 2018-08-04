@@ -8,7 +8,7 @@ in vec3 eyeDir;
 in vec3 lightDir;
 
 // ouput data
-out vec3 color;
+out vec4 color;
 
 // uniforms
 uniform sampler2D texSampler;
@@ -18,14 +18,17 @@ uniform vec3 LightPos;
 void main()
 {
 	// light color and power settings
-	vec3 LightColor = vec3(1,1,1);
+	vec4 LightColor = vec4(1,1,1,1);
 	float LightPower = 50.0f;
 	
 	// material properties
-	vec3 LightBoost = vec3(2.5);
-	vec3 diffusion = texture( texSampler, uv ).rgb * LightBoost;
-	vec3 ambient = vec3(0.1,0.1,0.1) * diffusion;
+	vec4 LightBoost = vec4(vec3(2.5), 1.0);
+	vec4 diffusion = texture2D( texSampler, uv ) * LightBoost;
+
+	vec4 ambient = vec4(0.1,0.1,0.1,1.0) * diffusion;
+
 	vec3 specular = vec3(0.3,0.3,0.3);
+	vec4 specular4 = vec4(specular, 1.0);
 
 	// distance from vertex to the light
 	float distance = length( LightPos - pos );
@@ -51,7 +54,12 @@ void main()
 	
 	float alpha = 5;
 
-	color = ambient + 																	     //ambient color
+	vec4 lighting = 
+		  	ambient + 																	     //ambient color
 			diffusion * LightColor * LightPower * intensity / (distance*distance) +		     //diffusion color
-			specular * LightColor * LightPower * pow(cosAlpha,alpha) / (distance*distance);  //specular
+			specular4 * LightColor * LightPower * pow(cosAlpha,alpha) / (distance*distance);  //specular
+
+	if(lighting.a < 0.8)
+		discard;
+	color = lighting;
 }

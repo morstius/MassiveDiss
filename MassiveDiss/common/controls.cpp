@@ -27,6 +27,8 @@ float verticalAngle = 0.0f;
 // Field of View
 float fieldOfView = 45.0f;
 
+bool isFullscreen = false;
+
 bool visCheck = true;
 bool tPressed = false;
 
@@ -85,49 +87,49 @@ bool showBounding()
 	return showBoundingVolume;
 }
 
-void computeMatricesFromInputs(GLFWwindow* window, GLFWmonitor* monitor, float width, float height)
+void computeMVP(GLFWwindow* window, GLFWmonitor* monitor, int width, int height)
 {
 	// handle mouse
 	handleMouse(window, width, height);
 
 	// handle keyboard
-	handleKeyboard(window, monitor);
+	handleKeyboard(window, monitor, width, height);
 
 	// Projection matrix : 45° Field of View,, display range : 0.1 unit <-> 100 units
-	float aspect = 4.0f / 3.0f;			// 4:3 ratio
-	float near = 0.1f;					// near
-	float far = 100.0f;					// far
+	float aspect = !isFullscreen ? 4.0f / 3.0f : 16.0f / 9.0f;		// 4:3 ratio changes to 16:9 in fullscreen
+	float near = 0.1f;												// near
+	float far = 100.0f;												// far
 
 	ProjectionMatrix = glm::perspective(glm::radians(fieldOfView), aspect, near, far);
 }
 
-void handleMouse(GLFWwindow* window, float width, float height)
+void handleMouse(GLFWwindow* window, int width, int height)
 {
-	// Get mouse position
+	// get mouse position
 	double xpos, ypos;
 	glfwGetCursorPos(window, &xpos, &ypos);
 
-	// Reset mouse position for next frame
-	glfwSetCursorPos(window, 1024 / 2, 768 / 2);
+	// reset mouse and use the center position for comparison
+	glfwSetCursorPos(window, width / 2, height / 2);
 
-	// Compute new orientation
+	// compute new orientation
 	horizontalAngle += mouseSpeed * float(width / 2 - xpos);
 	verticalAngle += mouseSpeed * float(height / 2 - ypos);
 }
 
-void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor)
+void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor, int width, int height)
 {
 	// glfwGetTime is called only once, the first time this function is called
 	static double lastTime = glfwGetTime();
 
-	// Compute time difference between current and last frame
+	// compute time difference between current and last frame
 	double now = glfwGetTime();
 	float dt = float(now - lastTime);
 
-	// need to convert from Spherical coordinates to Cartesian coordinates conversion
+	// need to convert from Spherical coordinates to Cartesian coordinates conversion, the radius is 1
 	glm::vec3 direction(
 		cos(verticalAngle) * sin(horizontalAngle),
-		sin(verticalAngle),
+		sin(verticalAngle),						  
 		cos(verticalAngle) * cos(horizontalAngle)
 	);
 
@@ -136,41 +138,41 @@ void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor)
 	// don't want to fly or leave my plane without using q/e
 	horizontalDir.y = 0.0f;
 
-	// Right vector
+	// right vector
 	glm::vec3 right = glm::vec3(
 		sin(horizontalAngle - 3.14f / 2.0f),
 		0,
 		cos(horizontalAngle - 3.14f / 2.0f)
 	);
 
-	// Up vector
+	// the up vector
 	glm::vec3 up = glm::cross(right, direction);
 
-	// Move forward
+	// move forward
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS 
 		|| glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		position += horizontalDir * dt * speed;
 	}
-	// Move backward
+	// move backward
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS 
 		|| glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
 		position -= horizontalDir * dt * speed;
 	}
-	// Strafe right
+	// strafe right
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS 
 		|| glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 		position += right * dt * speed;
 	}
-	// Strafe left
+	// strafe left
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS 
 		|| glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
 		position -= right * dt * speed;
 	}
-	// Go up
+	// go up
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
 		position += vec3(0, 1.0f, 0) * dt * speed;
 	}
-	// Go down
+	// go down
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
 		position -= vec3(0, 1.0f, 0) * dt * speed;
 	}
@@ -185,12 +187,14 @@ void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor)
 		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 		glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
 		glViewport(0, 0, mode->width, mode->height);
+		isFullscreen = true;
 	}
 	// Go windowed
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) 
 	{
-		glfwSetWindowMonitor(window, NULL, 50, 50, 1024, 768, 0);
-		glViewport(0, 0, 1024, 768);
+		glfwSetWindowMonitor(window, NULL, 50, 50, width, height, 0);
+		glViewport(0, 0, width, height);
+		isFullscreen = false;
 	}
 
 	// Toggle Frustum Culling
