@@ -22,5 +22,10 @@ int findTexIdx(
 	std::vector<MtlObj>
 );
 
+void vboIndex(
+	const std::vector<ObjInfo>&,
+	std::vector<ObjInfo>&
+);
+
 #endif // !MODELLOADR_HPP
 

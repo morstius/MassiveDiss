@@ -7,7 +7,7 @@
 class Frustum
 {
 public:
-	std::array<glm::vec4, 6> planes;
+	std::array<glm::vec4, 6> frustPlanes;
 
 	void update(glm::mat4 matrix)
 	{
@@ -17,36 +17,36 @@ public:
 		glm::vec4 matW = glm::vec4(matrix[0].w, matrix[1].w, matrix[2].w, matrix[3].w);
 		
 		//left plane
-		planes[0] = matW + matX;
+		frustPlanes[0] = matW + matX;
+		frustPlanes[0] = glm::normalize(frustPlanes[0]);
 
 		//right plane
-		planes[1] = matW - matX;
+		frustPlanes[1] = matW - matX;
+		frustPlanes[1] = glm::normalize(frustPlanes[1]);
 		
 		//bottom plane
-		planes[2] = matW + matY;
+		frustPlanes[2] = matW + matY;
+		frustPlanes[2] = glm::normalize(frustPlanes[2]);
 
 		//top plane
-		planes[3] = matW - matY;
+		frustPlanes[3] = matW - matY;
+		frustPlanes[3] = glm::normalize(frustPlanes[3]);
 
 		//back plane
-		planes[4] = matW + matZ;
+		frustPlanes[4] = matW + matZ;
+		frustPlanes[4] = glm::normalize(frustPlanes[4]);
 		
 		//front plane
-		planes[5] = matW - matZ;
-
-		//normalize
-		for (auto i = 0; i < planes.size(); i++)
-		{
-			planes[i] = glm::normalize(planes[i]);
-		}
+		frustPlanes[5] = matW - matZ;
+		frustPlanes[5] = glm::normalize(frustPlanes[5]);
 	}
 
 	bool checkSphere(glm::vec3 pos, float radius)
 	{
-		for (auto i = 0; i < planes.size(); i++)
+		for (auto i = 0; i < frustPlanes.size(); i++)
 		{
 			// check if bounding sphere for object is inside the frustum
-			if ((planes[i].x * pos.x) + (planes[i].y * pos.y) + (planes[i].z * pos.z) + planes[i].w <= -radius)
+			if ((frustPlanes[i].x * pos.x) + (frustPlanes[i].y * pos.y) + (frustPlanes[i].z * pos.z) + frustPlanes[i].w <= -radius)
 			{
 				return false;
 			}

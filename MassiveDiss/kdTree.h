@@ -13,29 +13,28 @@ using namespace glm;
 #include <ctime>
 #include <chrono>
 
+
+
 struct kdNode 
 {
+	enum axisSplit { xaxis = 0, yaxis = 1, zaxis = 2 };
+
+	glm::vec3 split;
+	axisSplit axis;
+
+	kdNode *left, *right;
+
 	bool isLeaf;
-	bool splitX;
-	int idx;
-	ObjInfo objinfo;
-	glm::vec3 point;
-	struct kdNode *left, *right;
-
-	std::chrono::duration<double> time_sorting;
-	std::chrono::duration<double> time_creatingLeafNode;
-	std::chrono::duration<double> time_creatingIntNode;
+	std::vector<ObjInfo> objInfo;
 };
-
-std::vector<ObjInfo> sort(std::vector<ObjInfo>, bool);
 
 kdNode* kdTreeConstruct(std::vector<ObjInfo>, int, int);
 
-ObjInfo XSplit(std::vector<ObjInfo>, std::vector<ObjInfo>&, std::vector<ObjInfo>&);
+void XSplit(const std::vector<ObjInfo>&, std::vector<ObjInfo>&, std::vector<ObjInfo>&);
 
-ObjInfo ZSplit(std::vector<ObjInfo>, std::vector<ObjInfo>&, std::vector<ObjInfo>&);
+void ZSplit(const std::vector<ObjInfo>&, std::vector<ObjInfo>&, std::vector<ObjInfo>&);
 
-kdNode* CreateInteriorNode(ObjInfo, kdNode*, kdNode*, bool);
+kdNode* CreateInteriorNode(kdNode*, kdNode*, kdNode::axisSplit);
 
 kdNode* CreateLeafNode(std::vector<ObjInfo>);
 

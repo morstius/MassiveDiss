@@ -71,9 +71,6 @@ void generateTreeAndWriteResults(FILE *outFile, std::vector<ObjInfo> objInfo)
 	fprintf(outFile, "Total size %d bytes\n", sum);
 
 	fprintf(outFile, "Creating k-d tree took %f seconds\n", time_span.count());
-	fprintf(outFile, "Creating k-d tree spent %f seconds to sorting\n", tree->time_sorting.count());
-	fprintf(outFile, "Creating k-d tree spent %f creating leaf nodes\n", tree->time_creatingLeafNode.count());
-	fprintf(outFile, "Creating k-d tree spent %f seconds internal nodes\n", tree->time_creatingIntNode.count());
 	fprintf(outFile, "=====================================================\n");
 }
 
@@ -88,8 +85,24 @@ void profileKdTree(std::vector<ObjInfo> objInfo)
 
 	fprintf(outFile, "======================= Profiling =======================\n");
 	
-	for (int i = 1; i < objInfo.size(); i++)
+	if (!true)
 	{
+		for (int i = 1; i < objInfo.size(); i++)
+		{
+			fprintf(outFile, "\n");
+
+			std::vector<ObjInfo>::const_iterator first = objInfo.begin();
+			std::vector<ObjInfo>::const_iterator last = objInfo.begin() + i;
+			std::vector<ObjInfo> newVec(first, last);
+
+			generateTreeAndWriteResults(outFile, newVec);
+
+			fprintf(outFile, "\n\n");
+		}
+	}
+	else
+	{
+		int i = objInfo.size();
 		fprintf(outFile, "\n");
 
 		std::vector<ObjInfo>::const_iterator first = objInfo.begin();

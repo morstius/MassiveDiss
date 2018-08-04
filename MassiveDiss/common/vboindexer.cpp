@@ -34,12 +34,12 @@ bool getSimilarVertexIndex_fast(
 }
 
 void indexVBO(
-	std::vector<ObjInfo> objInfo,
+	const std::vector<ObjInfo>& objInfo,
 	std::vector<ObjInfo>& out_objInfo
 ){
 	std::map<PackedVertex,unsigned int> VertexToOutIndex;
 
-	// For each input vertex
+	// For each object
 	for (unsigned int j = 0; j < objInfo.size(); j++)
 	{
 		ObjInfo oi = ObjInfo();

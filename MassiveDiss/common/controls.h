@@ -1,8 +1,8 @@
 #ifndef CONTROLS_H
 #define CONTROLS_H
 
-void computeMatricesFromInputs(GLFWwindow*, GLFWmonitor*);
-void handleMouse(GLFWwindow*);
+void computeMatricesFromInputs(GLFWwindow*, GLFWmonitor*, float, float);
+void handleMouse(GLFWwindow*, float, float);
 void handleKeyboard(GLFWwindow*, GLFWmonitor*);
 
 glm::mat4 getViewMatrix();

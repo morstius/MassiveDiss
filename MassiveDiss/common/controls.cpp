@@ -85,10 +85,10 @@ bool showBounding()
 	return showBoundingVolume;
 }
 
-void computeMatricesFromInputs(GLFWwindow* window, GLFWmonitor* monitor)
+void computeMatricesFromInputs(GLFWwindow* window, GLFWmonitor* monitor, float width, float height)
 {
 	// handle mouse
-	handleMouse(window);
+	handleMouse(window, width, height);
 
 	// handle keyboard
 	handleKeyboard(window, monitor);
@@ -101,7 +101,7 @@ void computeMatricesFromInputs(GLFWwindow* window, GLFWmonitor* monitor)
 	ProjectionMatrix = glm::perspective(glm::radians(fieldOfView), aspect, near, far);
 }
 
-void handleMouse(GLFWwindow* window)
+void handleMouse(GLFWwindow* window, float width, float height)
 {
 	// Get mouse position
 	double xpos, ypos;
@@ -111,8 +111,8 @@ void handleMouse(GLFWwindow* window)
 	glfwSetCursorPos(window, 1024 / 2, 768 / 2);
 
 	// Compute new orientation
-	horizontalAngle += mouseSpeed * float(1024 / 2 - xpos);
-	verticalAngle += mouseSpeed * float(768 / 2 - ypos);
+	horizontalAngle += mouseSpeed * float(width / 2 - xpos);
+	verticalAngle += mouseSpeed * float(height / 2 - ypos);
 }
 
 void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor)

@@ -4,6 +4,7 @@
 #include <cstring>
 #include <fstream>
 #include <string>
+#include <map>
 
 #include <glm/glm.hpp>
 
@@ -216,13 +217,13 @@ bool loadObj(
 
 	inputFile.close();
 
-	// For each vertex of each triangle
+	// for each object go through
 	for (unsigned int j = 0; j < idxInfo.size(); j++)
 	{
 		ObjInfo oi = ObjInfo();
 		for (unsigned int i = 0; i < idxInfo[j].vertexIndices.size(); i++)
 		{
-			// Get the indices of its attributes
+			// get the indices of its attributes
 			unsigned int vertexIndex = idxInfo[j].vertexIndices[i];
 			unsigned int uvIndex = idxInfo[j].uvIndices[i];
 			unsigned int normalIndex = idxInfo[j].normalIndices[i];
@@ -232,10 +233,12 @@ bool loadObj(
 			glm::vec2 uv = temp_uvs[uvIndex - 1];
 			glm::vec3 normal = temp_normals[normalIndex - 1];
 
-			// Put the attributes in buffers
+			// add them to the vectors in the right order
 			oi.vertices.push_back(vertex);
 			oi.uvs.push_back(uv);
 			oi.normals.push_back(normal);
+			
+			// also need the texture index
 			oi.txIdx = idxInfo[j].textureIndex;
 		}
 		out_objInfo.push_back(oi);
@@ -330,4 +333,71 @@ int findTexIdx(
 	printf("Texture not found!!!\n");
 
 	return idx;
+}
+
+struct attributeCombo
+{
+	attributeCombo(glm::vec3 v, glm::vec2 u, glm::vec3 n) 
+		: vertex(v), uv(u), normal(n)
+	{}
+
+	bool operator<(const attributeCombo that) const {
+		return memcmp((void*)this, (void*)&that, sizeof(attributeCombo))>0;
+	};
+
+	glm::vec3 vertex;
+	glm::vec2 uv;
+	glm::vec3 normal;
+};
+
+int exists(
+	 std::map<attributeCombo, int>& map,
+	 attributeCombo& combo
+)
+{
+	std::map<attributeCombo, int>::iterator i = map.find(combo);
+
+	if (map.find(combo) != map.end())
+		return i->second;
+	else
+		return -1;
+}
+
+void vboIndex(
+	const std::vector<ObjInfo>& objInfo,
+	std::vector<ObjInfo>& out_objInfo
+)
+{
+	// loop through every element
+	for (int i = 0; i < objInfo.size(); ++i)
+	{
+		std::map<attributeCombo, int> map;
+		int idx = 0;
+		ObjInfo oi;
+
+		int found = -1;
+		for (int j = 0; j < objInfo[i].normals.size(); ++j)
+		{
+			// checking if vertex, texture coord and normal combo is already in the ObjInfo
+			attributeCombo ac = attributeCombo(objInfo[i].vertices[j], objInfo[i].uvs[j], objInfo[i].normals[j]);
+			int index = exists(map, ac);
+
+			// not already on there
+			if (index < 0)
+			{
+				oi.vertices.push_back(objInfo[i].vertices[j]);
+				oi.uvs.push_back(objInfo[i].uvs[j]);
+				oi.normals.push_back(objInfo[i].normals[j]);
+				oi.indices.push_back(idx);
+				map[ac] = idx++;
+			}
+			else
+			{
+				oi.indices.push_back(index);
+			}
+		}
+		oi.txIdx = objInfo[i].txIdx;
+
+		out_objInfo.push_back(oi);
+	}
 }

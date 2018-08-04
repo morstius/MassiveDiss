@@ -50,6 +50,54 @@ void writeFile(const std::vector<ObjInfo>& objInfo, const std::vector<MtlObj>& t
 	fclose(file);
 }
 
+void writeBinaryFile(const std::vector<ObjInfo>& objInfo, std::string name)
+{
+	// open file
+	std::ofstream file;
+	file.open(std::string(name + ".bin"), std::ios::binary);
+
+	unsigned size = objInfo.size();
+	file.write((char*)&size, sizeof(unsigned));
+
+	// write each object in vector
+	for (int i = 0; i < objInfo.size(); ++i)
+	{
+		if (objInfo[i].vertices.size() < 1 || objInfo[i].indices.size() < 1)
+			continue;
+
+		// vertices, uvs and normals
+		unsigned vertSize = objInfo[i].vertices.size();
+		file.write(reinterpret_cast<char *>(&vertSize), sizeof(unsigned));
+		std::vector <glm::vec3> vec = objInfo[i].vertices;
+		file.write(reinterpret_cast<char *>(&vec[0]), objInfo[i].vertices.size() * sizeof(glm::vec3));
+		std::vector <glm::vec2> uv = objInfo[i].uvs;
+		file.write(reinterpret_cast<char *>(&uv[0]), objInfo[i].uvs.size() * sizeof(glm::vec2));
+		std::vector <glm::vec3> norm = objInfo[i].normals;
+		file.write(reinterpret_cast<char *>(&norm[0]), objInfo[i].normals.size() * sizeof(glm::vec3));
+
+		// bounding box vertices
+		unsigned boundVertSize = objInfo[i].boundingVert.size();
+		file.write(reinterpret_cast<char *>(&boundVertSize), sizeof(unsigned));
+
+		std::vector <glm::vec3> bb = objInfo[i].boundingVert;
+		file.write(reinterpret_cast<char *>(&bb[0]), objInfo[i].boundingVert.size() * sizeof(glm::vec3));
+
+		// indices
+		unsigned idxSize = objInfo[i].indices.size();
+		file.write(reinterpret_cast<char *>(&idxSize), sizeof(unsigned));
+
+		std::vector <unsigned int> indices = objInfo[i].indices;
+		file.write(reinterpret_cast<char *>(&indices[0]), objInfo[i].indices.size() * sizeof(unsigned int));
+
+		// texture
+		int txdInd = objInfo[i].txIdx;
+		file.write(reinterpret_cast<char *>(&txdInd), sizeof(int));
+	}
+
+	// close file
+	file.close();
+}
+
 void readFile(std::vector<ObjInfo>& objInfo, std::vector<MtlObj>& textureLib, std::string name)
 {
 	std::ifstream file;
@@ -154,5 +202,107 @@ void readFile(std::vector<ObjInfo>& objInfo, std::vector<MtlObj>& textureLib, st
 	objInfo.push_back(oi);
 
 	// close file
+	file.close();
+}
+
+void readBinaryFile(std::vector<ObjInfo>& objInfo, const std::string& name)
+{
+	int texId = 0;
+
+	std::ifstream file;
+
+	// open file in input mode
+	file.open(std::string(name + ".bin"), std::ios::binary);
+
+	unsigned  size;
+	file.read((char*)&size, sizeof(unsigned));
+	
+	// read in
+	for (int i = 0; i < size; ++i)
+	{
+		ObjInfo oi;
+
+		// vertices, uvs, normals
+		unsigned vertSize;
+		file.read(reinterpret_cast<char *>(&vertSize), sizeof(unsigned));
+		oi.vertices.resize(vertSize);
+		file.read(reinterpret_cast<char *>(&oi.vertices[0]), vertSize * sizeof(glm::vec3));
+		oi.uvs.resize(vertSize);
+		file.read(reinterpret_cast<char *>(&oi.uvs[0]), vertSize * sizeof(glm::vec2));
+		oi.normals.resize(vertSize);
+		file.read(reinterpret_cast<char *>(&oi.normals[0]), vertSize * sizeof(glm::vec3));
+
+		// bounding box vertices
+		unsigned boundVertSize;
+		file.read(reinterpret_cast<char *>(&boundVertSize), sizeof(unsigned));
+		oi.boundingVert.resize(boundVertSize);
+		file.read(reinterpret_cast<char *>(&oi.boundingVert[0]), boundVertSize * sizeof(glm::vec3));
+
+		// indices
+		unsigned idxSize;
+		file.read(reinterpret_cast<char *>(&idxSize), sizeof(unsigned));
+		oi.indices.resize(idxSize);
+		file.read(reinterpret_cast<char *>(&oi.indices[0]), idxSize * sizeof(unsigned int));
+
+		// texture
+
+		int txdInd;
+		file.read(reinterpret_cast<char *>(&txdInd), sizeof(int));
+		oi.txIdx = txdInd;
+
+		objInfo.push_back(oi);
+	}
+
+	file.close();
+}
+
+void writeMtlFile(const std::vector<MtlObj>& mtlObj, const std::string& name)
+{
+	FILE* file;
+
+	// open file
+	file = fopen(std::string(name + ".mtls").c_str(), "w");
+
+	for (int i = 0; i < mtlObj.size(); ++i)
+	{
+		int len = strlen(mtlObj[i].map_Kd.c_str());
+		if(len > 0)
+			fprintf(file, "%s\n", mtlObj[i].map_Kd.c_str());
+		else
+			fprintf(file, "%s\n", "x");
+	}
+
+	fclose(file);
+}
+
+void readMtlFile(std::vector<MtlObj>& mtlObj, const std::string& name)
+{
+	std::ifstream file;
+
+	// open file in input mode
+	file.open(std::string(name + ".mtls").c_str(), std::ios::in);
+
+	char line[256];
+
+	while (file.getline(line, 256))
+	{
+		char path[100];
+		sscanf(line, "%s", &path);
+
+		MtlObj mtl;
+		if (strlen(path) == 1)
+		{
+			mtl.hasTexture = false;
+			mtl.map_Kd = path;
+		}
+		else
+		{
+			mtl.hasTexture = true;
+			mtl.map_Kd = path;
+		}
+
+		mtlObj.push_back(mtl);
+	}
+
 	file.close();
 }
