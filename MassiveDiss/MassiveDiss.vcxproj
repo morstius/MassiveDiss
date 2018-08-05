@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="common\occluder.h" />
     <ClInclude Include="readWrite.h" />
     <ClInclude Include="common\controls.h" />
     <ClInclude Include="common\frustum.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="common\occluder.cpp" />
     <ClCompile Include="readWrite.cpp" />
     <ClCompile Include="common\controls.cpp" />
     <ClCompile Include="common\shader.cpp" />
@@ -197,6 +199,8 @@
     <None Include="shaders\base.vertexshader" />
     <None Include="shaders\boundingbox.fragmentshader" />
     <None Include="shaders\boundingbox.vertexshader" />
+    <None Include="shaders\text2D.fragmentshader" />
+    <None Include="shaders\text2D.vertexshader" />
     <None Include="shaders\TextVertexShader.fragmentshader" />
     <None Include="shaders\TextVertexShader.vertexshader" />
   </ItemGroup>

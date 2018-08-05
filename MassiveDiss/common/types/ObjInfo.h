@@ -174,6 +174,7 @@ public:
 	std::vector<unsigned int> indices;
 	int txIdx;
 
+	bool useForOcclusion;
 	std::vector<glm::vec3> boundingVert;
 
 	glm::vec3 min;

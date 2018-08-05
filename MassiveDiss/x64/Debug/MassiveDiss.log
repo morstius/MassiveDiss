@@ -1,4 +1,4 @@
 ﻿  MassiveDiss.cpp
-d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\massivediss.cpp(264): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\massivediss.cpp(580): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\massivediss.cpp(301): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\massivediss.cpp(617): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   MassiveDiss.vcxproj -> D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\x64\Debug\MassiveDiss.exe

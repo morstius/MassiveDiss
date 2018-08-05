@@ -8,7 +8,7 @@ layout(location = 2) in vec3 vertexNormal;
 // uniform values, capital
 uniform mat4 MVP;
 uniform mat4 View;
-uniform mat4 Model;
+
 uniform vec3 LightPos;
 
 // output values
@@ -29,16 +29,16 @@ void main()
     ///////////////////////////////////////////////
     
 	// position of the vertex
-	pos = (Model * vec4(vertexPos,1)).xyz;
+	pos = (vec4(vertexPos,1)).xyz;
 	
 	// vector from vertex to camera
-	eyeDir = vec3(0,0,0) - ( View * Model * vec4(vertexPos,1)).xyz;
+	eyeDir = vec3(0,0,0) - ( View * vec4(vertexPos,1)).xyz;
 
 	// vector from vertex to light
 	lightDir = ( View * vec4(LightPos,1)).xyz + eyeDir;
 	
 	// vertex normal
-	normal = ( View * Model * vec4(vertexNormal,0)).xyz;
+	normal = ( View * vec4(vertexNormal,0)).xyz;
 
 	///////////////////////////////////////////////
     /////////////// PASS-THROUGH //////////////////

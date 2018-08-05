@@ -13,6 +13,97 @@
 #include "common/types/ObjInfo.h"
 #include "common/types/IdxInfo.h"
 
+int findTexIdx(
+	std::string curTxt,
+	std::vector<MtlObj>& txtLib
+)
+{
+	//find the index of the texture in the texture lib
+	int idx = -1;
+	for (int i = 0; i < txtLib.size(); i++)
+	{
+		// checking if texture is already in the lib
+		if (curTxt.compare(txtLib[i].newmtl) == 0)
+			return i;
+	}
+
+	// printing out error if nothing was found, shouldn't happens
+	printf("Texture not found!!!\n");
+
+	return idx;
+}
+
+// read the material file and create a texture lib object with texture paths
+bool populateMtlLib(
+	std::string filepath,
+	std::vector<MtlObj>& textureLib
+)
+{
+	std::string path = "models/" + filepath;
+
+	// open file
+	std::ifstream inputFile(path, std::ios::in);
+
+	// making sure that file is open
+	if (!inputFile.is_open()) {
+		printf("Can't open file %s!\n", path.c_str());
+		getchar();
+		return false;
+	}
+
+	// create new material object
+	MtlObj mtlObj = MtlObj();
+
+	// initialize variables
+	char line[256];
+	bool hasText = false;
+
+	// some helping variables
+	std::string newmtl = "none";
+	std::string map_Kd = "";
+
+	while (inputFile.getline(line, 256))
+	{
+		// a dummy for the first letters
+		char dummy[10];
+
+		char objName[50];
+		sscanf(line, "%s %s", &dummy, &objName);
+
+		if (strcmp(dummy, "map_Kd") == 0)
+		{
+			// populate the texture path
+			std::string textPath = "textures/" + std::string(objName);
+
+			map_Kd = std::string(textPath);
+			hasText = true;
+		}
+
+		if (strcmp(dummy, "newmtl") == 0)
+		{
+			// new material type
+			if (newmtl.compare("none") != 0)
+			{
+				hasText = map_Kd.compare("") == 0 ? false : true;
+				textureLib.push_back(MtlObj(newmtl, map_Kd, hasText));
+
+				map_Kd = "";
+			}
+
+			newmtl = std::string(objName);
+		}
+	}
+
+	// if there is no texture then setting the path as an empty string
+	if (!hasText)
+		map_Kd = std::string("");
+
+	// need very little info, just the path and that it is in the right order
+	textureLib.push_back(MtlObj(newmtl, map_Kd, hasText));
+
+	return 0;
+}
+
 bool loadObj(
 	const char * path,
 	std::vector<ObjInfo>& out_objInfo,
@@ -21,16 +112,17 @@ bool loadObj(
 {
 	printf("Loading .obj file %s...\n",	path);
 
+	// some helping and temporary variables
 	std::vector<IdxInfo> idxInfo;
-	std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
-	std::vector<glm::vec3> temp_vertices;
+	std::vector<unsigned int> vertexIdx, uvIdx, normalIdx;
+	std::vector<glm::vec3> temp_vert, temp_norm;
 	std::vector<glm::vec2> temp_uvs;
-	std::vector<glm::vec3> temp_normals;
 	std::vector<int> temp_texInd;
 
 	// open file
 	std::ifstream inputFile(path, std::ios::in);
 
+	// making sure the file is open
 	if (!inputFile.is_open()) {
 		printf("Can't open the file %s!\n", path);
 		getchar();
@@ -60,7 +152,7 @@ bool loadObj(
 						glm::vec3 vec;
 
 						sscanf(line, "%s %f %f %f", dummy, &(vec.x), &(vec.y), &(vec.z));
-						temp_vertices.push_back(vec);
+						temp_vert.push_back(vec);
 						break;
 					}
 					case 'n':
@@ -69,7 +161,7 @@ bool loadObj(
 						glm::vec3 vec;
 
 						sscanf(line, "%s %f %f %f", dummy, &(vec.x), &(vec.y), &(vec.z));
-						temp_normals.push_back(vec);
+						temp_norm.push_back(vec);
 						break;
 					}
 					case 't':
@@ -87,62 +179,66 @@ bool loadObj(
 			}
 			case 'f':
 			{
+				// some of the .obj files had quads instead of triangles so this was made since it wasn't too much extra
 				unsigned int vertexIndex[4], uvIndex[4], normalIndex[4];
 				int matches = sscanf(line, "%s %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n", dummy, 
 					&vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2], &vertexIndex[3], &uvIndex[3], &normalIndex[3]);
 
-
+				// need to check how many matches were made to know if it has triangles or quads
 				switch (matches)
 				{
+					// case 10 is reading in a triangle
 					case 10:
 					{
 						// set vertex indices
-						vertexIndices.push_back(vertexIndex[0]);
-						vertexIndices.push_back(vertexIndex[1]);
-						vertexIndices.push_back(vertexIndex[2]);
+						vertexIdx.push_back(vertexIndex[0]);
+						vertexIdx.push_back(vertexIndex[1]);
+						vertexIdx.push_back(vertexIndex[2]);
 						// set uv indices
-						uvIndices.push_back(uvIndex[0]);
-						uvIndices.push_back(uvIndex[1]);
-						uvIndices.push_back(uvIndex[2]);
+						uvIdx.push_back(uvIndex[0]);
+						uvIdx.push_back(uvIndex[1]);
+						uvIdx.push_back(uvIndex[2]);
 						// set normal indices
-						normalIndices.push_back(normalIndex[0]);
-						normalIndices.push_back(normalIndex[1]);
-						normalIndices.push_back(normalIndex[2]);
+						normalIdx.push_back(normalIndex[0]);
+						normalIdx.push_back(normalIndex[1]);
+						normalIdx.push_back(normalIndex[2]);
 						
 						break;
 					}
+					// case 13 is reading in a quad
 					case 13:
 					{
 						// set vertex indices
-						vertexIndices.push_back(vertexIndex[0]);
-						vertexIndices.push_back(vertexIndex[1]);
-						vertexIndices.push_back(vertexIndex[2]);
+						vertexIdx.push_back(vertexIndex[0]);
+						vertexIdx.push_back(vertexIndex[1]);
+						vertexIdx.push_back(vertexIndex[2]);
 						// set uv indices
-						uvIndices.push_back(uvIndex[0]);
-						uvIndices.push_back(uvIndex[1]);
-						uvIndices.push_back(uvIndex[2]);
+						uvIdx.push_back(uvIndex[0]);
+						uvIdx.push_back(uvIndex[1]);
+						uvIdx.push_back(uvIndex[2]);
 						// set normal indices
-						normalIndices.push_back(normalIndex[0]);
-						normalIndices.push_back(normalIndex[1]);
-						normalIndices.push_back(normalIndex[2]);
+						normalIdx.push_back(normalIndex[0]);
+						normalIdx.push_back(normalIndex[1]);
+						normalIdx.push_back(normalIndex[2]);
 
 						// set vertex indices
-						vertexIndices.push_back(vertexIndex[2]);
-						vertexIndices.push_back(vertexIndex[3]);
-						vertexIndices.push_back(vertexIndex[0]);
+						vertexIdx.push_back(vertexIndex[2]);
+						vertexIdx.push_back(vertexIndex[3]);
+						vertexIdx.push_back(vertexIndex[0]);
 						// set uv indices
-						uvIndices.push_back(uvIndex[2]);
-						uvIndices.push_back(uvIndex[3]);
-						uvIndices.push_back(uvIndex[0]);
+						uvIdx.push_back(uvIndex[2]);
+						uvIdx.push_back(uvIndex[3]);
+						uvIdx.push_back(uvIndex[0]);
 						// set normal indices
-						normalIndices.push_back(normalIndex[2]);
-						normalIndices.push_back(normalIndex[3]);
-						normalIndices.push_back(normalIndex[0]);
+						normalIdx.push_back(normalIndex[2]);
+						normalIdx.push_back(normalIndex[3]);
+						normalIdx.push_back(normalIndex[0]);
 
 						break;
 					}
 					default:
 					{
+						// default which shouldn't happen
 						printf("Obj format not as expected.\n");
 						inputFile.close();
 						return false;
@@ -157,20 +253,20 @@ bool loadObj(
 				char objName[256];
 				sscanf(line, "%s %s", dummy, &objName);
 
-				// create object to add onto the vector 
-				if (vertexIndices.size() != 0)
+				// create object to add onto in the vector 
+				if (vertexIdx.size() != 0)
 				{
 					IdxInfo ii = IdxInfo();
-					ii.normalIndices = normalIndices;
-					ii.uvIndices = uvIndices;
-					ii.vertexIndices = vertexIndices;
+					ii.normalIndices = normalIdx;
+					ii.uvIndices = uvIdx;
+					ii.vertexIndices = vertexIdx;
 					ii.textureIndex = findTexIdx(curText, textureLib);
 					
 					idxInfo.push_back(ii);
 
-					vertexIndices.clear();
-					normalIndices.clear();
-					uvIndices.clear();
+					vertexIdx.clear();
+					normalIdx.clear();
+					uvIdx.clear();
 				}
 
 				break;
@@ -182,6 +278,8 @@ bool loadObj(
 				sscanf(line, "%s %s", &dummy, &objName);
 				if (strcmp(dummy, "mtllib") == 0)
 				{
+					// this is the material lib link
+					// I only expect one material lib file so it only reads the first one it finds
 					if (!loadMtl)
 					{
 						printf("Loading material lib...\n");
@@ -197,6 +295,8 @@ bool loadObj(
 				char objName[256];
 				sscanf(line, "%s %s", &dummy, &objName);
 
+				// for some reason the value kept changing each time it entered here, until I did this
+				// works so I leave it
 				if (strcmp(dummy, "usemtl") == 0)
 				{
 					strcpy(curText, objName);
@@ -208,16 +308,18 @@ bool loadObj(
 
 	//add the last idx info to the vector
 	IdxInfo ii = IdxInfo();
-	ii.normalIndices = normalIndices;
-	ii.uvIndices = uvIndices;
-	ii.vertexIndices = vertexIndices;
+	ii.normalIndices = normalIdx;
+	ii.uvIndices = uvIdx;
+	ii.vertexIndices = vertexIdx;
 	ii.textureIndex = findTexIdx(curText, textureLib);
 
 	idxInfo.push_back(ii);
 
+	// remember to be nice and close the file
 	inputFile.close();
 
-	// for each object go through
+	// go through each object and load attributes in the right order
+	// according to the face part in the .obj file
 	for (unsigned int j = 0; j < idxInfo.size(); j++)
 	{
 		ObjInfo oi = ObjInfo();
@@ -228,15 +330,10 @@ bool loadObj(
 			unsigned int uvIndex = idxInfo[j].uvIndices[i];
 			unsigned int normalIndex = idxInfo[j].normalIndices[i];
 
-			// Get the attributes thanks to the index
-			glm::vec3 vertex = temp_vertices[vertexIndex - 1];
-			glm::vec2 uv = temp_uvs[uvIndex - 1];
-			glm::vec3 normal = temp_normals[normalIndex - 1];
-
 			// add them to the vectors in the right order
-			oi.vertices.push_back(vertex);
-			oi.uvs.push_back(uv);
-			oi.normals.push_back(normal);
+			oi.vertices.push_back(temp_vert[vertexIndex - 1]);
+			oi.uvs.push_back(temp_uvs[uvIndex - 1]);
+			oi.normals.push_back(temp_norm[normalIndex - 1]);
 			
 			// also need the texture index
 			oi.txIdx = idxInfo[j].textureIndex;
@@ -247,94 +344,8 @@ bool loadObj(
 	return 0;
 }
 
-// Read the material file and create a texture lib object with texture paths
-bool populateMtlLib(
-	std::string filepath,
-	std::vector<MtlObj>& textureLib
-)
-{
-	std::string path = "models/" + filepath;
-
-	// open file
-	std::ifstream inputFile(path, std::ios::in);
-
-	if (!inputFile.is_open()) {
-		printf("Impossible to open the file %s! Are you in the right path ?\n", path.c_str());
-		getchar();
-		return false;
-	}
-
-	// create new material object
-	MtlObj mtlObj = MtlObj();
-
-	// initialize variables
-	char line[256];
-	bool hasText = false;
-
-	std::string newmtl = "none";
-	std::string map_Kd = "";
-
-	while (inputFile.getline(line, 256))
-	{
-		// a dummy for the first letters
-		char dummy[10];
-
-		char objName[50];
-		
-		sscanf(line, "%s %s", &dummy, &objName);
-
-		if (strcmp(dummy, "map_Kd") == 0)
-		{
-			// populate the texture path
-			std::string textPath = "textures/" + std::string(objName);
-
-			map_Kd = std::string(textPath);
-			hasText = true;
-		}
-
-		if (strcmp(dummy, "newmtl") == 0)
-		{
-			// new material type
-			if (newmtl.compare("none") != 0)
-			{
-				hasText = map_Kd.compare("") == 0 ? false : true;
-				textureLib.push_back(MtlObj(newmtl, map_Kd, hasText));
-
-				map_Kd = "";
-			}
-
-			newmtl = std::string(objName);
-
-		}
-	}
-
-	// if there is no texture then setting the path as an empty string
-	if (!hasText)
-		map_Kd = std::string("");
-
-	textureLib.push_back(MtlObj(newmtl, map_Kd, hasText));
-
-	return 0;
-}
-
-int findTexIdx(
-	std::string curTxt,
-	std::vector<MtlObj> txtLib
-)
-{
-	//find the index of the texture in the texture lib
-	int idx = -1;
-	for (int i = 0; i < txtLib.size(); i++)
-	{
-		if (curTxt.compare(txtLib[i].newmtl) == 0)
-			return i;
-	}
-
-	printf("Texture not found!!!\n");
-
-	return idx;
-}
-
+// a helping class to allow me to use the map function more easily,
+// since using find() is faster than a for loop
 struct attributeCombo
 {
 	// constructor
@@ -354,6 +365,7 @@ struct attributeCombo
 	glm::vec3 normal;
 };
 
+// checking if the combo exists in the map
 int exists(
 	 std::map<attributeCombo, int>& map,
 	 attributeCombo& combo
@@ -407,6 +419,8 @@ void vboIndex(
 		}
 		// need the texture index
 		oi.txIdx = objInfo[i].txIdx;
+
+		oi.center();
 
 		out_objInfo.push_back(oi);
 	}

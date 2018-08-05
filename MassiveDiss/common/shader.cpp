@@ -49,6 +49,7 @@ GLuint prepareShader(const char* path, GLenum shaderType)
 	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &result);
 	glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
 
+	// write it out if there are any errors
 	if (infoLogLength > 0)
 	{
 		std::vector<char> errorMessage(infoLogLength + 1);
@@ -85,7 +86,7 @@ GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 		printf("Error message: %s\n", &errorMessage[0]);
 	}
 
-
+	// clean up
 	glDetachShader(ProgramID, VertexShaderID);
 	glDetachShader(ProgramID, FragmentShaderID);
 

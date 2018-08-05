@@ -69,6 +69,9 @@
     <ClInclude Include="readWrite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="common\occluder.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -101,6 +104,9 @@
     <ClCompile Include="readWrite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="common\occluder.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\base.vertexshader">
@@ -121,5 +127,7 @@
     <None Include="shaders\TextVertexShader.vertexshader">
       <Filter>shaders</Filter>
     </None>
+    <None Include="shaders\text2D.fragmentshader" />
+    <None Include="shaders\text2D.vertexshader" />
   </ItemGroup>
 </Project>

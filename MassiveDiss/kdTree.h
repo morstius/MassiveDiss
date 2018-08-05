@@ -13,13 +13,12 @@ using namespace glm;
 #include <ctime>
 #include <chrono>
 
-
-
 struct kdNode 
 {
+	// made this an enum for readability
 	enum axisSplit { xaxis = 0, yaxis = 1, zaxis = 2 };
 
-	glm::vec3 split;
+	float split;
 	axisSplit axis;
 
 	kdNode *left, *right;
@@ -29,13 +28,5 @@ struct kdNode
 };
 
 kdNode* kdTreeConstruct(std::vector<ObjInfo>&, int, int);
-
-void XSplit(const std::vector<ObjInfo>&, std::vector<ObjInfo>&, std::vector<ObjInfo>&);
-
-void ZSplit(const std::vector<ObjInfo>&, std::vector<ObjInfo>&, std::vector<ObjInfo>&);
-
-kdNode* CreateInteriorNode(kdNode*, kdNode*, kdNode::axisSplit);
-
-kdNode* CreateLeafNode(std::vector<ObjInfo>);
 
 #endif // !KDTREE_H

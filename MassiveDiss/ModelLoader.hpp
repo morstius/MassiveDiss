@@ -12,16 +12,6 @@ bool loadObj(
 	std::vector<MtlObj>&
 );
 
-bool populateMtlLib(
-	std::string,
-	std::vector<MtlObj>&
-);
-
-int findTexIdx(
-	std::string,
-	std::vector<MtlObj>
-);
-
 void vboIndex(
 	const std::vector<ObjInfo>&,
 	std::vector<ObjInfo>&

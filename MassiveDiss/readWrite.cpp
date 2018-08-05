@@ -92,6 +92,14 @@ void writeBinaryFile(const std::vector<ObjInfo>& objInfo, std::string name)
 		// texture
 		int txdInd = objInfo[i].txIdx;
 		file.write(reinterpret_cast<char *>(&txdInd), sizeof(int));
+
+		// center information
+		glm::vec3 center = objInfo[i]._center;
+		file.write(reinterpret_cast<char *>(&center[0]), sizeof(glm::vec3));
+
+		// occlusion information
+		bool occlusion = objInfo[i].useForOcclusion;
+		file.write(reinterpret_cast<char *>(&occlusion), sizeof(bool));
 	}
 
 	// close file
@@ -245,10 +253,19 @@ void readBinaryFile(std::vector<ObjInfo>& objInfo, const std::string& name)
 		file.read(reinterpret_cast<char *>(&oi.indices[0]), idxSize * sizeof(unsigned int));
 
 		// texture
-
 		int txdInd;
 		file.read(reinterpret_cast<char *>(&txdInd), sizeof(int));
 		oi.txIdx = txdInd;
+
+		// center information
+		glm::vec3 center;
+		file.read(reinterpret_cast<char *>(&center[0]), sizeof(glm::vec3));
+		oi._center = center;
+
+		// occlusion information
+		bool occlusion;
+		file.read(reinterpret_cast<char *>(&occlusion), sizeof(bool));
+		oi.useForOcclusion = occlusion;
 
 		objInfo.push_back(oi);
 	}
