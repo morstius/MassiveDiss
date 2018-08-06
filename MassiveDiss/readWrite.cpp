@@ -11,6 +11,8 @@ using namespace glm;
 #include "common/types/ObjInfo.h"
 #include "common/types/MtlObj.h"
 
+#include "kdTree.h"
+
 void writeFile(const std::vector<ObjInfo>& objInfo, const std::vector<MtlObj>& textureLib, std::string name)
 {
 	FILE* file;
@@ -101,6 +103,83 @@ void writeBinaryFile(const std::vector<ObjInfo>& objInfo, std::string name)
 		bool occlusion = objInfo[i].useForOcclusion;
 		file.write(reinterpret_cast<char *>(&occlusion), sizeof(bool));
 	}
+
+	// close file
+	file.close();
+}
+
+void writeNode(std::ofstream& file, kdNode* tree)
+{
+	// bool leaf
+	bool leaf = tree->isLeaf;
+	file.write(reinterpret_cast<char *>(&tree->isLeaf), sizeof(bool));
+
+	if (tree->isLeaf)
+	{
+		unsigned size = tree->objInfo.size();
+		file.write((char*)&size, sizeof(unsigned));
+
+		for (int i = 0; i < size; ++i)
+		{
+			// vertices, uvs and normals
+			unsigned vertSize = tree->objInfo[i].vertices.size();
+			file.write(reinterpret_cast<char *>(&vertSize), sizeof(unsigned));
+			std::vector <glm::vec3> vec = tree->objInfo[i].vertices;
+			file.write(reinterpret_cast<char *>(&vec[0]), tree->objInfo[i].vertices.size() * sizeof(glm::vec3));
+			std::vector <glm::vec2> uv = tree->objInfo[i].uvs;
+			file.write(reinterpret_cast<char *>(&uv[0]), tree->objInfo[i].uvs.size() * sizeof(glm::vec2));
+			std::vector <glm::vec3> norm = tree->objInfo[i].normals;
+			file.write(reinterpret_cast<char *>(&norm[0]), tree->objInfo[i].normals.size() * sizeof(glm::vec3));
+
+			// bounding box vertices
+			unsigned boundVertSize = tree->objInfo[i].boundingVert.size();
+			file.write(reinterpret_cast<char *>(&boundVertSize), sizeof(unsigned));
+
+			std::vector <glm::vec3> bb = tree->objInfo[i].boundingVert;
+			file.write(reinterpret_cast<char *>(&bb[0]), tree->objInfo[i].boundingVert.size() * sizeof(glm::vec3));
+
+			// indices
+			unsigned idxSize = tree->objInfo[i].indices.size();
+			file.write(reinterpret_cast<char *>(&idxSize), sizeof(unsigned));
+
+			std::vector <unsigned int> indices = tree->objInfo[i].indices;
+			file.write(reinterpret_cast<char *>(&indices[0]), tree->objInfo[i].indices.size() * sizeof(unsigned int));
+
+			// texture
+			int txdInd = tree->objInfo[i].txIdx;
+			file.write(reinterpret_cast<char *>(&txdInd), sizeof(int));
+
+			// center information
+			glm::vec3 center = tree->objInfo[i]._center;
+			file.write(reinterpret_cast<char *>(&center[0]), sizeof(glm::vec3));
+
+			// occlusion information
+			bool occlusion = tree->objInfo[i].useForOcclusion;
+			file.write(reinterpret_cast<char *>(&occlusion), sizeof(bool));
+		}
+	}
+	else
+	{
+		// where the split was made
+		float split = tree->split;
+		file.write(reinterpret_cast<char *>(&split), sizeof(float));
+
+		// which axis was the split on
+		int axis = tree->axis;
+
+		writeNode(file, tree->left);
+		writeNode(file, tree->right);
+	}
+}
+
+void writeTreeBinaryFile(kdNode* tree, std::string name)
+{
+	// open file
+	std::ofstream file;
+	file.open(std::string(name + ".bin"), std::ios::binary);
+
+	// go through node by node
+	writeNode(file, tree);
 
 	// close file
 	file.close();
@@ -269,6 +348,93 @@ void readBinaryFile(std::vector<ObjInfo>& objInfo, const std::string& name)
 
 		objInfo.push_back(oi);
 	}
+
+	file.close();
+}
+
+void readNode(std::ifstream& file, kdNode* tree)
+{
+	// bool leaf
+	bool leaf;
+	file.read(reinterpret_cast<char *>(&tree->isLeaf), sizeof(bool));
+
+	if (tree->isLeaf)
+	{
+		unsigned size = tree->objInfo.size();
+		file.read((char*)&size, sizeof(unsigned));
+
+		for (int i = 0; i < size; ++i)
+		{
+			ObjInfo oi;
+
+			// vertices, uvs, normals
+			unsigned vertSize;
+			file.read(reinterpret_cast<char *>(&vertSize), sizeof(unsigned));
+			oi.vertices.resize(vertSize);
+			file.read(reinterpret_cast<char *>(&oi.vertices[0]), vertSize * sizeof(glm::vec3));
+			oi.uvs.resize(vertSize);
+			file.read(reinterpret_cast<char *>(&oi.uvs[0]), vertSize * sizeof(glm::vec2));
+			oi.normals.resize(vertSize);
+			file.read(reinterpret_cast<char *>(&oi.normals[0]), vertSize * sizeof(glm::vec3));
+
+			// bounding box vertices
+			unsigned boundVertSize;
+			file.read(reinterpret_cast<char *>(&boundVertSize), sizeof(unsigned));
+			oi.boundingVert.resize(boundVertSize);
+			file.read(reinterpret_cast<char *>(&oi.boundingVert[0]), boundVertSize * sizeof(glm::vec3));
+
+			// indices
+			unsigned idxSize;
+			file.read(reinterpret_cast<char *>(&idxSize), sizeof(unsigned));
+			oi.indices.resize(idxSize);
+			file.read(reinterpret_cast<char *>(&oi.indices[0]), idxSize * sizeof(unsigned int));
+
+			// texture
+			int txdInd;
+			file.read(reinterpret_cast<char *>(&txdInd), sizeof(int));
+			oi.txIdx = txdInd;
+
+			// center information
+			glm::vec3 center;
+			file.read(reinterpret_cast<char *>(&center[0]), sizeof(glm::vec3));
+			oi._center = center;
+
+			// occlusion information
+			bool occlusion;
+			file.read(reinterpret_cast<char *>(&occlusion), sizeof(bool));
+			oi.useForOcclusion = occlusion;
+
+			tree->objInfo.push_back(oi);
+			tree->isLeaf = true;
+		}
+	}
+	else
+	{
+		// where the split was made
+		float split;
+		file.read(reinterpret_cast<char *>(&split), sizeof(float));
+
+		// which axis was the split on
+		int axis = tree->axis;
+
+		tree->left = new kdNode();
+		tree->right = new kdNode();
+		readNode(file, tree->left);
+		readNode(file, tree->right);
+	}
+}
+
+void readTreeBinaryFile(kdNode* tree, const std::string name)
+{
+	int texId = 0;
+
+	std::ifstream file;
+
+	// open file in input mode
+	file.open(std::string(name + ".bin"), std::ios::binary);
+
+	// go through node by node
+	readNode(file, tree);
 
 	file.close();
 }
