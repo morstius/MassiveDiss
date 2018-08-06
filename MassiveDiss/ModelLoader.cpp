@@ -349,12 +349,22 @@ bool loadObj(
 struct attributeCombo
 {
 	// constructor
-	attributeCombo(glm::vec3 v, glm::vec2 u, glm::vec3 n) 
+	attributeCombo(glm::vec3 v, glm::vec2 u, glm::vec3 n)
 		: vertex(v), uv(u), normal(n)
 	{}
 
-	// overwriting the compare operator for the find function
-	bool operator<(const attributeCombo ac) const 
+	~attributeCombo()
+	{}
+
+	// overwriting the compare operator
+	bool operator==(const attributeCombo ac) const
+	{
+		// checking if this and the ac obj are the same
+		return std::memcmp((void*)this, (void*)(&ac), sizeof(attributeCombo)) == 0;
+	};
+
+	// overwriting the less than operator
+	bool operator<(const attributeCombo ac) const
 	{
 		// checking if this and the ac obj are the same
 		return std::memcmp((void*)this, (void*)(&ac), sizeof(attributeCombo)) > 0;
