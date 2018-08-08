@@ -107,13 +107,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glm;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glfw-3.2.1.bin.WIN64\include;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\.;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\include;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\stb-masters;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glm;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glfw-3.2.1.bin.WIN64\include;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\.;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\include;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\stb-masters;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\openvr\bin\win64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\bin\Release\x64;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glfw-3.2.1.bin.WIN64\lib-vc2015;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\bin\Release\x64;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glfw-3.2.1.bin.WIN64\lib-vc2015;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\lib\Release\x64;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\openvr\lib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;openvr_api.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -147,19 +147,20 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glm;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glfw-3.2.1.bin.WIN64\include;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\.;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\include;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\stb-masters;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glm;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glfw-3.2.1.bin.WIN64\include;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\.;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\include;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\stb-masters;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\openvr\bin\win64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\bin\Release\x64;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glfw-3.2.1.bin.WIN64\lib-vc2015;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\bin\Release\x64;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glfw-3.2.1.bin.WIN64\lib-vc2015;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\lib\Release\x64;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\openvr\lib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;openvr_api.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="common\occluder.h" />
+    <ClInclude Include="common\vr.h" />
     <ClInclude Include="readWrite.h" />
     <ClInclude Include="common\controls.h" />
     <ClInclude Include="common\frustum.h" />
@@ -173,11 +174,13 @@
     <ClInclude Include="lib\stb-masters\stb_image.h" />
     <ClInclude Include="ModelLoader.hpp" />
     <ClInclude Include="profile.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="common\occluder.cpp" />
+    <ClCompile Include="common\vr.cpp" />
     <ClCompile Include="readWrite.cpp" />
     <ClCompile Include="common\controls.cpp" />
     <ClCompile Include="common\shader.cpp" />
@@ -201,8 +204,9 @@
     <None Include="shaders\boundingbox.vertexshader" />
     <None Include="shaders\text2D.fragmentshader" />
     <None Include="shaders\text2D.vertexshader" />
-    <None Include="shaders\TextVertexShader.fragmentshader" />
-    <None Include="shaders\TextVertexShader.vertexshader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MassiveDiss.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

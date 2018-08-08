@@ -72,6 +72,12 @@
     <ClInclude Include="common\occluder.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\vr.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -107,6 +113,9 @@
     <ClCompile Include="common\occluder.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="common\vr.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\base.vertexshader">
@@ -121,13 +130,16 @@
     <None Include="shaders\boundingbox.vertexshader">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\TextVertexShader.fragmentshader">
+    <None Include="shaders\text2D.vertexshader">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\TextVertexShader.vertexshader">
+    <None Include="shaders\text2D.fragmentshader">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\text2D.fragmentshader" />
-    <None Include="shaders\text2D.vertexshader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MassiveDiss.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

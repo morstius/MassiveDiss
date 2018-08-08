@@ -12,6 +12,10 @@ uniform sampler2D texSampler;
 void main()
 {
 	vec4 texColor = texture2D(texSampler, UV);
+
+	if(texColor.r + texColor.g + texColor.b < 0.2)
+		discard;
+
 	if(texColor.a < 0.8)
 		discard;
 

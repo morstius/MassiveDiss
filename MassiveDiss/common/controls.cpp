@@ -8,24 +8,14 @@ using namespace glm;
 
 #include "controls.h"
 
-glm::mat4 ViewMatrix;
-glm::mat4 ProjectionMatrix;
-
-glm::mat4 getViewMatrix(){
-	return ViewMatrix;
-}
-glm::mat4 getProjectionMatrix(){
-	return ProjectionMatrix;
-}
-
-// Initial position
-glm::vec3 position = glm::vec3( 0, 0, 1 ); 
-// Initial horizontal angle
-float horizontalAngle = 2.0f;
-// Initial vertical angle
+// initial values
+glm::vec3 position = glm::vec3( 0, 0, 0 ); 
+float horizontalAngle = 0.0f;
 float verticalAngle = 0.0f;
-// Field of View
 float fieldOfView = 45.0f;
+
+glm::mat4 viewMatrix;
+glm::mat4 projMatrix;
 
 bool isFullscreen = false;
 
@@ -44,17 +34,16 @@ bool vPressed = false;
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.0005f;
 
-glm::vec3 getPosition() 
+glm::vec3 getPosition()
 {
 	return position;
 }
-glm::vec3 getDirection() 
-{
-	return glm::vec3(
-		cos(verticalAngle) * sin(horizontalAngle),
-		sin(verticalAngle),
-		cos(verticalAngle) * cos(horizontalAngle)
-	);
+
+glm::mat4 getViewMatrix() {
+	return viewMatrix;
+}
+glm::mat4 getProjectionMatrix() {
+	return projMatrix;
 }
 
 float getHorizontal()
@@ -95,12 +84,15 @@ void computeMVP(GLFWwindow* window, GLFWmonitor* monitor, int width, int height)
 	// handle keyboard
 	handleKeyboard(window, monitor, width, height);
 
-	// Projection matrix : 45° Field of View,, display range : 0.1 unit <-> 100 units
-	float aspect = !isFullscreen ? 4.0f / 3.0f : 16.0f / 9.0f;		// 4:3 ratio changes to 16:9 in fullscreen
-	float near = 0.1f;												// near
-	float far = 100.0f;												// far
+	// 4:3 ratio changes to 16:9 in fullscreen
+	float aspect = !isFullscreen ? 4.0f / 3.0f : 16.0f / 9.0f;		
+	// near
+	float near = 0.1f;												
+	// far
+	float far = 100.0f;												
 
-	ProjectionMatrix = glm::perspective(glm::radians(fieldOfView), aspect, near, far);
+	// setting up the projection matrix
+	projMatrix = glm::perspective(glm::radians(fieldOfView), aspect, near, far);
 }
 
 void handleMouse(GLFWwindow* window, int width, int height)
@@ -110,11 +102,11 @@ void handleMouse(GLFWwindow* window, int width, int height)
 	glfwGetCursorPos(window, &xpos, &ypos);
 
 	// reset mouse and use the center position for comparison
-	glfwSetCursorPos(window, width / 2, height / 2);
+	glfwSetCursorPos(window, double(width / 2), double(height / 2));
 
 	// compute new orientation
-	horizontalAngle += mouseSpeed * float(width / 2 - xpos);
-	verticalAngle += mouseSpeed * float(height / 2 - ypos);
+	horizontalAngle += mouseSpeed * float(double(width / 2) - xpos);
+	verticalAngle += mouseSpeed * float(double(height / 2) - ypos);
 }
 
 void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor, int width, int height)
@@ -137,6 +129,8 @@ void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor, int width, int hei
 	glm::vec3 horizontalDir = direction;
 	// don't want to fly or leave my plane without using q/e
 	horizontalDir.y = 0.0f;
+	// don't want the step size to depend on how far up or down the view direction is
+	horizontalDir = glm::normalize(horizontalDir);
 
 	// right vector
 	glm::vec3 right = glm::vec3(
@@ -147,6 +141,10 @@ void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor, int width, int hei
 
 	// the up vector
 	glm::vec3 up = glm::cross(right, direction);
+
+	//////////////////////////////////////////////
+	///////////////// MOVES //////////////////////
+	//////////////////////////////////////////////
 
 	// move forward
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS 
@@ -177,11 +175,14 @@ void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor, int width, int hei
 		position -= vec3(0, 1.0f, 0) * dt * speed;
 	}
 
+	// camera matrix, updating view matrix here since I calculated the direction and the up vector here
+	viewMatrix = glm::lookAt( position, position + direction, up );
+
 	//////////////////////////////////////////////
-	////////////// TOGGLES ///////////////////////
+	//////////////// TOGGLES /////////////////////
 	//////////////////////////////////////////////
 
-	// Go fullscreen
+	// go fullscreen
 	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) 
 	{
 		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
@@ -189,15 +190,14 @@ void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor, int width, int hei
 		glViewport(0, 0, mode->width, mode->height);
 		isFullscreen = true;
 	}
-	// Go windowed
+	// go windowed
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) 
 	{
 		glfwSetWindowMonitor(window, NULL, 50, 50, width, height, 0);
 		glViewport(0, 0, width, height);
 		isFullscreen = false;
 	}
-
-	// Toggle Frustum Culling
+	// toggle Frustum Culling
 	if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) 
 	{
 		tPressed = true;
@@ -207,7 +207,7 @@ void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor, int width, int hei
 		tPressed = false;
 		visCheck = !visCheck;
 	}
-	// Toggle Occlusion Culling
+	// toggle Occlusion Culling
 	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) 
 	{
 		cPressed = true;
@@ -217,7 +217,7 @@ void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor, int width, int hei
 		cPressed = false;
 		occlusionCullingEnabled = !occlusionCullingEnabled;
 	}
-	// Toggle Drawing Mode
+	// toggle Drawing Mode
 	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) 
 	{
 		mPressed = true;
@@ -227,7 +227,7 @@ void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor, int width, int hei
 		mPressed = false;
 		mode = !mode;
 	}
-	// Toggle Show Bounding Volume
+	// toggle Show Bounding Volume
 	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) 
 	{
 		vPressed = true;
@@ -238,23 +238,12 @@ void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor, int width, int hei
 		showBoundingVolume = !showBoundingVolume;
 	}
 
-
-	// Close window
+	// close window
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) 
 	{
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	}
 
-
-	// Camera matrix, updating view matrix here since I calculated the direction and the up vector here
-	ViewMatrix = glm::lookAt(
-		position,           // Camera is here
-		position + direction, // and looks here : at the same position, plus "direction"
-		up                  // Head is up (set to 0,-1,0 to look upside-down)
-	);
-
-
-	// For the next frame, the "last time" will be "now"
-	// to have a nice delta time
+	// now is the last time, next frame
 	lastTime = now;
 }

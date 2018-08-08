@@ -37,7 +37,6 @@ GLuint prepareShader(const char* path, GLenum shaderType)
 	}
 
 	// compile shader
-	printf("Compiling shader: %s\n", path);
 	char const * sourcePointer = shaderCode.c_str();
 	glShaderSource(shaderID, 1, &sourcePointer, NULL);
 	glCompileShader(shaderID);
@@ -61,14 +60,15 @@ GLuint prepareShader(const char* path, GLenum shaderType)
 	return shaderID;
 }
 
-GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path) 
+GLuint LoadShaders(const char* vertex_file_path, const char* fragment_file_path) 
 {
-	// create the shaders
+	// create the shaders, printing before preparing in case of errors
+	printf("Loading shader %s\n", vertex_file_path);
 	GLuint VertexShaderID = prepareShader(vertex_file_path, GL_VERTEX_SHADER);
+	printf("Loading shader %s\n", fragment_file_path);
 	GLuint FragmentShaderID = prepareShader(fragment_file_path, GL_FRAGMENT_SHADER);
 
 	// link the program
-	printf("Linking program\n");
 	GLuint ProgramID = glCreateProgram();
 	glAttachShader(ProgramID, VertexShaderID);
 	glAttachShader(ProgramID, FragmentShaderID);

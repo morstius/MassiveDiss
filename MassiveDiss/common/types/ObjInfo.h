@@ -14,8 +14,6 @@ class ObjInfo
 public:
 	ObjInfo()
 	{
-		//Init
-		//glCreateVertexArrays(1, &boundingBoxArray);
 		this->center();
 	}
 	~ObjInfo()
@@ -59,6 +57,7 @@ public:
 		minZ = this->vertices[0].z;
 		maxZ = this->vertices[0].z;
 
+		// finding the max and min values for x,y and z
 		for (int j = 0; j < this->vertices.size(); ++j)
 		{
 			if (this->vertices[j].x < minX)
@@ -77,6 +76,7 @@ public:
 				maxZ = this->vertices[j].z;
 		}
 
+		// creating the 8 corners of the bounding box
 		glm::vec3 up_left_deep = glm::vec3(minX, maxY, maxZ);
 		glm::vec3 up_left_near = glm::vec3(minX, maxY, minZ);
 
@@ -164,6 +164,7 @@ public:
 				max_length = test2;
 		}
 
+		// max length is the length squared, so need to take the root
 		_size = sqrt(max_length);
 		return _size;
 	}

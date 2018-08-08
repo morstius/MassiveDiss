@@ -102,7 +102,7 @@ void profileKdTree(std::vector<ObjInfo> objInfo)
 	}
 	else
 	{
-		int i = objInfo.size();
+		int i = (int)objInfo.size();
 		fprintf(outFile, "\n");
 
 		std::vector<ObjInfo>::const_iterator first = objInfo.begin();
