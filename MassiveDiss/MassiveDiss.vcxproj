@@ -204,6 +204,8 @@
     <None Include="shaders\boundingbox.vertexshader" />
     <None Include="shaders\text2D.fragmentshader" />
     <None Include="shaders\text2D.vertexshader" />
+    <None Include="shaders\vr.fragmentshader" />
+    <None Include="shaders\vr.vertexshader" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MassiveDiss.rc" />

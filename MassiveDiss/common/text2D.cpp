@@ -116,6 +116,8 @@ void draw(GLsizei size)
 	// cleanup
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
+
+	glUseProgram(0);
 }
 
 void printText2D(const char * text, int x, int y, int size)
