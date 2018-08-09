@@ -25,25 +25,20 @@ public:
 	// constructor
 	VR();
 
-	void BInitVR();
-	bool BInitCompositor();
+	void InitVR();
 	void Shutdown();
 
-	void RenderStereoTarget(GLuint, GLuint, ObjInfo&, std::vector<MtlObj>&, std::vector<GLuint>&);
-	void RenderFrame(GLuint, GLuint, ObjInfo&, std::vector<MtlObj>&, std::vector<GLuint>&);
-	void RenderScene(GLuint, GLuint, ObjInfo&, std::vector<MtlObj>&, std::vector<GLuint>&, vr::Hmd_Eye);
+	void CreateFrameBuffers(int, int, FramebufferDesc&);
+	void GetRecommendedRenderTargetSize(int&, int&);
 
-	void CreateFramebuffers(FramebufferDesc&);
+	void submitFramesOpenGL(GLint, GLint, bool = false);
 
 private:
 	std::string GetTrackedDeviceString(vr::TrackedDeviceIndex_t, vr::TrackedDeviceProperty, vr::TrackedPropertyError* = NULL);
 
-	bool _vrEnabled = false;
 	vr::IVRSystem* _hmd = NULL;
 	uint32_t _width, _height;
 	vr::IVRRenderModels* _renderModel;
-	FramebufferDesc _leftEyeDesc;
-	FramebufferDesc _rightEyeDesc;
 };
 
 #endif // !VR_H

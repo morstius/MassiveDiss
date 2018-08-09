@@ -1,4 +1,4 @@
-#version 330 core
+#version 410 core
 
 // input data per vertex, position, uv and normal
 layout(location = 0) in vec3 vertexPos;

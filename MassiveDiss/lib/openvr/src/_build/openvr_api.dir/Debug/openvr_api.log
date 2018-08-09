@@ -1,0 +1,27 @@
+﻿  openvr_api_public.cpp
+  jsoncpp.cpp
+  dirtools_public.cpp
+d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\lib\openvr\src\vrcommon\dirtools_public.cpp(35): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(133): note: see declaration of 'strcpy'
+  envvartools_public.cpp
+  pathtools_public.cpp
+d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\lib\openvr\src\vrcommon\pathtools_public.cpp(514): warning C4996: 'stricmp': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _stricmp. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(549): note: see declaration of 'stricmp'
+d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\lib\openvr\src\vrcommon\pathtools_public.cpp(522): warning C4996: 'stricmp': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _stricmp. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(549): note: see declaration of 'stricmp'
+d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\lib\openvr\src\vrcommon\pathtools_public.cpp(772): warning C4996: 'strnicmp': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _strnicmp. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(560): note: see declaration of 'strnicmp'
+  sharedlibtools_public.cpp
+  hmderrors_public.cpp
+d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\lib\openvr\src\vrcommon\hmderrors_public.cpp(224): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: see declaration of 'sprintf'
+  vrpathregistry_public.cpp
+  strtools_public.cpp
+d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\lib\openvr\src\vrcommon\strtools_public.cpp(14): warning C4996: 'strnicmp': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _strnicmp. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(560): note: see declaration of 'strnicmp'
+d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\lib\openvr\src\vrcommon\strtools_public.cpp(33): warning C4996: 'stricmp': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _stricmp. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(549): note: see declaration of 'stricmp'
+d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\lib\openvr\src\vrcommon\strtools_public.cpp(147): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(338): note: see declaration of 'strncpy'
+  Generating Code...
+  openvr_api.vcxproj -> D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\openvr\src\_build\Debug\openvr_api.lib

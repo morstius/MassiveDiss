@@ -28,7 +28,7 @@ bool cPressed = false;
 bool mode = true;
 bool mPressed = false;
 
-bool showBoundingVolume = false;
+bool reverseOcclusion = false;
 bool vPressed = false;
 
 float speed = 3.0f; // 3 units / second
@@ -71,12 +71,12 @@ bool getMode()
 	return mode;
 }
 
-bool showBounding()
+bool reverseOcclusionCulling()
 {
-	return showBoundingVolume;
+	return reverseOcclusion;
 }
 
-void computeMVP(GLFWwindow* window, GLFWmonitor* monitor, int width, int height)
+void updateMVP(GLFWwindow* window, GLFWmonitor* monitor, int width, int height)
 {
 	// handle mouse
 	handleMouse(window, width, height);
@@ -227,7 +227,7 @@ void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor, int width, int hei
 		mPressed = false;
 		mode = !mode;
 	}
-	// toggle Show Bounding Volume
+	// toggle reverse occlusion culling
 	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) 
 	{
 		vPressed = true;
@@ -235,7 +235,7 @@ void handleKeyboard(GLFWwindow* window, GLFWmonitor* monitor, int width, int hei
 	if (vPressed && glfwGetKey(window, GLFW_KEY_V) == GLFW_RELEASE) 
 	{
 		vPressed = false;
-		showBoundingVolume = !showBoundingVolume;
+		reverseOcclusion = !reverseOcclusion;
 	}
 
 	// close window

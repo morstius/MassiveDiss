@@ -1,7 +1,7 @@
 #ifndef CONTROLS_H
 #define CONTROLS_H
 
-void computeMVP(GLFWwindow*, GLFWmonitor*, int, int);
+void updateMVP(GLFWwindow*, GLFWmonitor*, int, int);
 void handleMouse(GLFWwindow*, int, int);
 void handleKeyboard(GLFWwindow*, GLFWmonitor*, int, int);
 
@@ -17,6 +17,6 @@ bool getVisCheck();
 bool getOccCheck();
 
 bool getMode();
-bool showBounding();
+bool reverseOcclusionCulling();
 
 #endif
