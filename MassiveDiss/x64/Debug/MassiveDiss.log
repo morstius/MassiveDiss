@@ -1,3 +1,6 @@
 ﻿  MassiveDiss.cpp
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  MassiveDiss.vcxproj -> D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\x64\Debug\MassiveDiss.exe
+  vr.cpp
+c:\users\sc17vok\source\repos\massivediss\massivediss\common\vr.cpp(84): warning C4101: 'buf': unreferenced local variable
+c:\users\sc17vok\source\repos\massivediss\massivediss\common\vr.cpp(93): warning C4101: 'buf': unreferenced local variable
+  Generating Code...
+  MassiveDiss.vcxproj -> C:\Users\sc17vok\Source\Repos\MassiveDiss\x64\Debug\MassiveDiss.exe

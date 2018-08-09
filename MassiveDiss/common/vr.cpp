@@ -13,6 +13,9 @@ VR::VR() : _hmd(NULL)
 
 		_hmd->GetRecommendedRenderTargetSize(&_width, &_height);
 	}
+
+	_near = 0.1f;
+	_far = 100.0f;
 }
 
 void VR::GetRecommendedRenderTargetSize(int& width, int& height)
@@ -116,7 +119,7 @@ std::string VR::GetTrackedDeviceString(vr::TrackedDeviceIndex_t unDevice, vr::Tr
 	return res;
 }
 
-void VR::submitFramesOpenGL(GLint leftEye, GLint rightEye, bool linear)
+void VR::submitFramesOpenGL(GLint leftEye, GLint rightEye)
 {
 	if (!_hmd)
 	{
@@ -133,4 +136,44 @@ void VR::submitFramesOpenGL(GLint leftEye, GLint rightEye, bool linear)
 	vr::VRCompositor()->Submit(vr::Eye_Right, &rightEyeTexture);
 
 	vr::VRCompositor()->PostPresentHandoff();
+}
+
+glm::mat4 VR::GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye)
+{
+	if (!_hmd)
+	{
+		return glm::mat4();
+	}
+	vr::HmdMatrix44_t mat = _hmd->GetProjectionMatrix(nEye, _near, _far);
+
+	return glm::mat4(
+		mat.m[0][0], mat.m[1][0], mat.m[2][0], mat.m[3][0],
+		mat.m[0][1], mat.m[1][1], mat.m[2][1], mat.m[3][1],
+		mat.m[0][2], mat.m[1][2], mat.m[2][2], mat.m[3][2],
+		mat.m[0][3], mat.m[1][3], mat.m[2][3], mat.m[3][3]
+	);
+}
+
+glm::mat4 VR::GetHMDMatrixPoseEye(vr::Hmd_Eye nEye)
+{
+	if (!_hmd)
+	{
+		return glm::mat4();
+	}
+
+	vr::HmdMatrix34_t matEyeRight = _hmd->GetEyeToHeadTransform(nEye);
+	glm::mat4 matrixObj(
+		matEyeRight.m[0][0], matEyeRight.m[1][0], matEyeRight.m[2][0], 0.0,
+		matEyeRight.m[0][1], matEyeRight.m[1][1], matEyeRight.m[2][1], 0.0,
+		matEyeRight.m[0][2], matEyeRight.m[1][2], matEyeRight.m[2][2], 0.0,
+		matEyeRight.m[0][3], matEyeRight.m[1][3], matEyeRight.m[2][3], 1.0
+	);
+	return glm::inverse(matrixObj);
+}
+
+glm::mat4 VR::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye)
+{
+	glm::mat4 matMVP;
+	matMVP = GetHMDMatrixProjectionEye(nEye) * GetHMDMatrixPoseEye(nEye);
+	return matMVP;
 }

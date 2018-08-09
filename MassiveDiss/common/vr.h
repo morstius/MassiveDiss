@@ -4,6 +4,11 @@
 #include "GL/glew.h"
 #include <openvr/headers/openvr.h>
 
+// Include GLM
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+using namespace glm;
+
 #include <string>
 #include <vector>
 
@@ -31,7 +36,11 @@ public:
 	void CreateFrameBuffers(int, int, FramebufferDesc&);
 	void GetRecommendedRenderTargetSize(int&, int&);
 
-	void submitFramesOpenGL(GLint, GLint, bool = false);
+	glm::mat4 GetHMDMatrixProjectionEye(vr::Hmd_Eye);
+	glm::mat4 GetHMDMatrixPoseEye(vr::Hmd_Eye);
+	glm::mat4 GetCurrentViewProjectionMatrix(vr::Hmd_Eye);
+
+	void submitFramesOpenGL(GLint, GLint);
 
 private:
 	std::string GetTrackedDeviceString(vr::TrackedDeviceIndex_t, vr::TrackedDeviceProperty, vr::TrackedPropertyError* = NULL);
@@ -39,6 +48,7 @@ private:
 	vr::IVRSystem* _hmd = NULL;
 	uint32_t _width, _height;
 	vr::IVRRenderModels* _renderModel;
+	float _near, _far;
 };
 
 #endif // !VR_H
