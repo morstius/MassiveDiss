@@ -170,6 +170,7 @@ glm::mat4 VR::GetHMDMatrixPoseEye(vr::Hmd_Eye nEye)
 		matEyeRight.m[0][2], matEyeRight.m[1][2], matEyeRight.m[2][2], 0.0,
 		matEyeRight.m[0][3], matEyeRight.m[1][3], matEyeRight.m[2][3], 1.0
 	);
+
 	return glm::inverse(matrixObj);
 }
 
