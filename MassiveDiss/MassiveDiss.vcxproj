@@ -23,7 +23,7 @@
     <ProjectGuid>{F200F48B-6273-499D-8EC6-DB0F44F326EA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>MassiveDiss</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
