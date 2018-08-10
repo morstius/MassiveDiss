@@ -23,7 +23,7 @@
     <ProjectGuid>{F200F48B-6273-499D-8EC6-DB0F44F326EA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>MassiveDiss</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -107,12 +107,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\sc17vok\source\repos\MassiveDiss\MassiveDiss\lib\glm;C:\Users\sc17vok\source\repos\MassiveDiss\MassiveDiss\lib\glfw-3.2.1.bin.WIN64\include;C:\Users\sc17vok\source\repos\MassiveDiss\MassiveDiss\lib\.;C:\Users\sc17vok\source\repos\MassiveDiss\MassiveDiss\lib\glew-2.1.0\include;C:\Users\sc17vok\source\repos\MassiveDiss\MassiveDiss\lib\stb-masters;C:\Users\sc17vok\source\repos\MassiveDiss\MassiveDiss\lib\openvr\bin\win64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MassiveDiss\lib\stb-masters;$(SolutionDir)MassiveDiss\lib\openvr\bin\win64;$(SolutionDir)MassiveDiss\lib\glm;$(SolutionDir)MassiveDiss\lib\glfw-3.2.1.bin.WIN64\include;$(SolutionDir)MassiveDiss\lib\glew-2.1.0\include;$(SolutionDir)MassiveDiss\lib\.</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\sc17vok\source\repos\MassiveDiss\MassiveDiss\lib\glew-2.1.0\bin\Release\x64;C:\Users\sc17vok\source\repos\MassiveDiss\MassiveDiss\lib\glfw-3.2.1.bin.WIN64\lib-vc2015;C:\Users\sc17vok\source\repos\MassiveDiss\MassiveDiss\lib\glew-2.1.0\lib\Release\x64;C:\Users\sc17vok\source\repos\MassiveDiss\MassiveDiss\lib\openvr\lib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)MassiveDiss\lib\openvr\lib\win64;$(SolutionDir)MassiveDiss\lib\glfw-3.2.1.bin.WIN64\lib-vc2015;$(SolutionDir)MassiveDiss\lib\glew-2.1.0\lib\Release\x64</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;openvr_api.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -147,14 +147,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glm;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glfw-3.2.1.bin.WIN64\include;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\.;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\include;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\stb-masters;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\openvr\bin\win64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MassiveDiss\lib\stb-masters;$(SolutionDir)MassiveDiss\lib\openvr\bin\win64;$(SolutionDir)MassiveDiss\lib\glm;$(SolutionDir)MassiveDiss\lib\glfw-3.2.1.bin.WIN64\include;$(SolutionDir)MassiveDiss\lib\glew-2.1.0\include;$(SolutionDir)MassiveDiss\lib\.</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\bin\Release\x64;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glfw-3.2.1.bin.WIN64\lib-vc2015;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\glew-2.1.0\lib\Release\x64;D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\MassiveDiss\lib\openvr\lib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)MassiveDiss\lib\openvr\lib\win64;$(SolutionDir)MassiveDiss\lib\glfw-3.2.1.bin.WIN64\lib-vc2015;$(SolutionDir)MassiveDiss\lib\glew-2.1.0\lib\Release\x64</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;openvr_api.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

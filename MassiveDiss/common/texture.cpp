@@ -143,12 +143,6 @@ GLuint loadStbText(const char * imagepath)
 	// free up what we just read in
 	stbi_image_free(data);
 
-	GLfloat fLargest;
-	glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &fLargest);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, fLargest);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
 	// need the handle to the texture
 	return texture;
 }

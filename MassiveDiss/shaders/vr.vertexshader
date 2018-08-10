@@ -1,15 +1,15 @@
-#version 410
+#version 330 core
 
-uniform mat4 matrix;
+uniform mat4 MVP;
 
-layout(location = 0) in vec4 position;
+layout(location = 0) in vec3 vertexPos;
 layout(location = 1) in vec2 v2UVcoordsIn;
 layout(location = 2) in vec3 v3NormalIn;
 
-out vec2 v2UVcoords;
+out vec2 UV;
 
 void main()
 {
-	v2UVcoords = v2UVcoordsIn;
-	gl_Position = matrix * position;
+	UV = (vertexPos.xy+vec2(1,1))/2.0;
+	gl_Position = vec4(vertexPos, 1.0);
 }

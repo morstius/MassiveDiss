@@ -2,6 +2,12 @@
 # .vs files
 .vs
 
+# x64 build
+x64
+
+# Debug build
+Debug
+
 # models can be too big for git
 MassiveDiss/models
 
