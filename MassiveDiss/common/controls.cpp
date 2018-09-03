@@ -19,19 +19,25 @@ glm::mat4 projMatrix;
 
 bool isFullscreen = false;
 
-bool visCheck = true;
+// turn frustum culling on or off
+bool visCheck = false;
 bool tPressed = false;
 
-bool occlusionCullingEnabled = false;
+// turn occlusion culling on or off
+bool occlusionCullingEnabled = true;
 bool cPressed = false;
 
+// what mode is used fill or line to draw triangles
 bool mode = true;
 bool mPressed = false;
 
+// trying to reverse what is occluded
 bool reverseOcclusion = false;
 bool vPressed = false;
 
-float speed = 3.0f; // 3 units / second
+// movement speed
+float speed = 3.0f;
+// view speed
 float mouseSpeed = 0.0005f;
 
 glm::vec3 getPosition()
@@ -76,6 +82,43 @@ bool reverseOcclusionCulling()
 	return reverseOcclusion;
 }
 
+void setPosition(glm::vec3 pos)
+{
+	position = pos;
+}
+
+void setVertical(float vert)
+{
+	verticalAngle = vert;
+}
+
+void setHorizontal(float hor)
+{
+	horizontalAngle = hor;
+}
+
+void update()
+{
+	glm::vec3 direction(
+		cos(verticalAngle) * sin(horizontalAngle),
+		sin(verticalAngle),
+		cos(verticalAngle) * cos(horizontalAngle)
+	);
+
+	// right vector
+	glm::vec3 right = glm::vec3(
+		sin(horizontalAngle - 3.14f / 2.0f),
+		0,
+		cos(horizontalAngle - 3.14f / 2.0f)
+	);
+
+	// the up vector
+	glm::vec3 up = glm::cross(right, direction);
+
+	// camera matrix, updating view matrix here since I calculated the direction and the up vector here
+	viewMatrix = glm::lookAt(position, position + direction, up);
+}
+
 void updateMVP(GLFWwindow* window, GLFWmonitor* monitor, int width, int height)
 {
 	// handle mouse
@@ -87,7 +130,7 @@ void updateMVP(GLFWwindow* window, GLFWmonitor* monitor, int width, int height)
 	// 4:3 ratio changes to 16:9 in fullscreen
 	float aspect = !isFullscreen ? 4.0f / 3.0f : 16.0f / 9.0f;		
 	// near
-	float near = 0.1f;												
+	float near = 0.01f;												
 	// far
 	float far = 100.0f;												
 

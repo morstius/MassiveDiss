@@ -41,13 +41,12 @@ public:
 		return _center;
 	}
 
-	void createBoundingBox()
+	void getMinMax(
+		float& minX, float& maxX,
+		float& minY, float& maxY,
+		float& minZ, float& maxZ
+	)
 	{
-		if (this->vertices.size() <= 0)
-			return;
-
-		float minX, maxX, minY, maxY, minZ, maxZ;
-
 		minX = this->vertices[0].x;
 		maxX = this->vertices[0].x;
 
@@ -75,6 +74,16 @@ public:
 			if (this->vertices[j].z > maxZ)
 				maxZ = this->vertices[j].z;
 		}
+	}
+
+	void createBoundingBox()
+	{
+		if (this->vertices.size() <= 0)
+			return;
+
+		float minX, maxX, minY, maxY, minZ, maxZ;
+
+		getMinMax(minX, maxX, minY, maxY, minZ, maxZ);
 
 		// creating the 8 corners of the bounding box
 		glm::vec3 up_left_deep = glm::vec3(minX, maxY, maxZ);
@@ -177,6 +186,7 @@ public:
 
 	bool useForOcclusion;
 	std::vector<glm::vec3> boundingVert;
+	GLuint boundingVertBoxBufferID;
 
 	glm::vec3 min;
 	glm::vec3 max;

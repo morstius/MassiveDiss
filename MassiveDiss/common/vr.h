@@ -42,7 +42,9 @@ public:
 	void SetupCameras();
 	void UpdateHMDMatrixPose();
 
-	void submitFramesOpenGL(GLint, GLint);
+	void SubmitFramesOpenGL(GLint, GLint);
+
+	void CleanupFrameBuffers(FramebufferDesc&);
 
 private:
 	std::string GetTrackedDeviceString(vr::TrackedDeviceIndex_t, vr::TrackedDeviceProperty, vr::TrackedPropertyError* = NULL);

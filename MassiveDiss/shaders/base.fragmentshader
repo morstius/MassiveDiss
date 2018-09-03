@@ -55,8 +55,8 @@ void main()
 	float alpha = 5;
 
 	vec4 lighting = 
-		  	ambient + 																	     //ambient color
-			diffusion * LightColor * LightPower * intensity / (distance*distance) +		     //diffusion color
+		  	ambient + 																	      //ambient color
+			diffusion * LightColor * LightPower * intensity / (distance*distance) +		      //diffusion color
 			specular4 * LightColor * LightPower * pow(cosAlpha,alpha) / (distance*distance);  //specular
 
 	if(lighting.a < 0.8)

@@ -78,6 +78,9 @@
     <ClInclude Include="common\vr.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="occlusionCheck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -115,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="common\vr.cpp">
       <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="occlusionCheck.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

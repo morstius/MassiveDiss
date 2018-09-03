@@ -16,7 +16,7 @@ void main()
 	if(texColor.r + texColor.g + texColor.b < 0.2)
 		discard;
 
-	if(texColor.a < 0.8)
+	if(texColor.a < 0.4)
 		discard;
 
 	color = texColor;

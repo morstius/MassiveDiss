@@ -28,7 +28,7 @@ void initText2D(const char * texturePath)
 	Text2DShaderID = LoadShaders("shaders/text2D.vertexshader", "shaders/text2D.fragmentshader");
 
 	// load in texture
-	Text2DTextureID = loadStbText(texturePath);
+	Text2DTextureID = loadDDS(texturePath);
 
 	// get handle on the sampler
 	Text2DUniformID = glGetUniformLocation( Text2DShaderID, "texSampler" );

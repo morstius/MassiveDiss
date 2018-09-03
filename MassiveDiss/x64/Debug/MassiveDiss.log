@@ -1,2 +1,11 @@
-﻿  MassiveDiss.cpp
-  MassiveDiss.vcxproj -> C:\Users\sc17vok\Source\Repos\MassiveDiss\x64\Debug\MassiveDiss.exe
+﻿  occlusionCheck.cpp
+d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\occlusioncheck.cpp(269): warning C4477: 'fprintf' : format string '%zd' requires an argument of type 'unsigned __int64', but variadic argument 1 has type 'int'
+  d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\occlusioncheck.cpp(269): note: consider using '%d' in the format string
+  d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\occlusioncheck.cpp(269): note: consider using '%I32d' in the format string
+d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\occlusioncheck.cpp(307): warning C4477: 'fprintf' : format string '%zd' requires an argument of type 'unsigned __int64', but variadic argument 2 has type 'int'
+  d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\occlusioncheck.cpp(307): note: consider using '%d' in the format string
+  d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\occlusioncheck.cpp(307): note: consider using '%I32d' in the format string
+d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\occlusioncheck.cpp(356): warning C4477: 'fprintf' : format string '%zd' requires an argument of type 'unsigned __int64', but variadic argument 2 has type 'int'
+  d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\occlusioncheck.cpp(356): note: consider using '%d' in the format string
+  d:\leedsuni\school\semester 2\m.sc\massivediss\massivediss\occlusioncheck.cpp(356): note: consider using '%I32d' in the format string
+  MassiveDiss.vcxproj -> D:\LeedsUni\School\Semester 2\M.Sc\MassiveDiss\x64\Debug\MassiveDiss.exe
