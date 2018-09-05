@@ -30,7 +30,7 @@ void check(
 	GLuint ViewMatrixID
 )
 {
-	// if using frustum culling and the bounding sphere is not inside the frustum then it is not drawn
+	// if being culled through frustum culling then we want to count it
 	if (!frustum.checkSphere(objInfo.center(), objInfo.size()))
 	{
 		std::string center = "(" + std::to_string(objInfo.center().x) + "," +
@@ -316,7 +316,7 @@ void checkOcclusion(kdNode* tree, std::unordered_map<std::string, int>& counter)
 {
 	if (tree->isLeaf)
 	{
-		// if using frustum culling and the bounding sphere is not inside the frustum then it is not drawn
+		// if object is occluded then we want to count it
 		if (tree->objInfo[0].occluded)
 		{
 			std::string center = "(" + std::to_string(tree->objInfo[0].center().x) + "," +
