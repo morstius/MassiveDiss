@@ -17,7 +17,7 @@ I created a bigger set by putting 4 models in a 2-by-2 fashion. It is using the 
 #controls
 t - toggles the frustum culling on and off
 c - toggles the occlusion culling on and off
-m - toggles drawing methods, whether the triangles are filled or just outlined
+m - toggles drawing methods, whether the triangles are filled or just outlined (this is just to see more of the scene and see how the objects are structured)
 
 w a s d - to move around
 q e - to change elevation
